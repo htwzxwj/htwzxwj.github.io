@@ -25,8 +25,16 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171058687.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171122572.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171809124.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171842802.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171853615.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171855951.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171905736.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171910654.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171914483.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171938540.png">
 <meta property="article:published_time" content="2023-11-17T02:37:08.000Z">
-<meta property="article:modified_time" content="2023-11-17T03:34:00.913Z">
+<meta property="article:modified_time" content="2023-11-17T11:42:23.494Z">
 <meta property="article:author" content="Aono">
 <meta property="article:tag" content="cache">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.3k 字
+          10k 字
         
       </span>
     
@@ -234,7 +242,7 @@
         
         
         
-          53 分钟
+          85 分钟
         
       </span>
     
@@ -366,6 +374,93 @@
 <p>代码如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span><br>&#123;<br>    <span class="hljs-type">char</span> opt;<br>    <span class="hljs-type">int</span> s, E, b;<br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">     * s:S=2^s是组的个数</span><br><span class="hljs-comment">     * E:每组中有多少行</span><br><span class="hljs-comment">     * b:B=2^b每个缓冲块的字节数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">-1</span> != (opt = getopt(argc, argv, <span class="hljs-string">&quot;hvs:E:b:t:&quot;</span>)))<br>    &#123;<br>        <span class="hljs-keyword">switch</span> (opt)<br>        &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;h&#x27;</span>:<br>            print_help();<br>            <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;v&#x27;</span>:<br>            verbose = <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>:<br>            s = atoi(optarg);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;E&#x27;</span>:<br>            E = atoi(optarg);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;b&#x27;</span>:<br>            b = atoi(optarg);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;t&#x27;</span>:<br>            <span class="hljs-built_in">strcpy</span>(t, optarg);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">default</span>:<br>            print_help();<br>            <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>        &#125;<br>    &#125;<br>    Init_Cache(s, E, b); <span class="hljs-comment">//初始化一个cache</span><br>    get_trace(s, E, b);<br>    free_Cache();<br>    <span class="hljs-comment">// printSummary(hit_count, miss_count, eviction_count)</span><br>    printSummary(hit_count, miss_count, eviction_count);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171809124.png" srcset="/img/loading.gif" lazyload alt="模拟结果"></p>
+<h2 id="Part-B-Optimizing-Matrix-Transpose"><a href="#Part-B-Optimizing-Matrix-Transpose" class="headerlink" title="Part B: Optimizing Matrix Transpose"></a>Part B: Optimizing Matrix Transpose</h2><p>In Part B you will write a transpose function in trans.c that causes as few cache misses as possible.</p>
+<p>要求本地变量最多定义12个</p>
+<ul>
+<li>32 × 32: 8 points if m &lt; 300, 0 points if m &gt; 600</li>
+<li>64 × 64: 8 points if m &lt; 1, 300, 0 points if m &gt; 2, 000</li>
+<li>61 × 67: 10 points if m &lt; 2, 000, 0 points if m &gt; 3, 000</li>
+</ul>
+<p>s &#x3D; 5, E &#x3D; 1, b &#x3D; 5，缓存有32组，每组一行，一行存8个int</p>
+<h4 id="32-32"><a href="#32-32" class="headerlink" title="32*32"></a>32*32</h4><p>根据pdf的提示，这里肯定要使用矩阵<strong>分块</strong>进行优化</p>
+<p>首先考虑最最简单的转置情况</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">trans_submit</span><span class="hljs-params">(<span class="hljs-type">int</span> M, <span class="hljs-type">int</span> N, <span class="hljs-type">int</span> A[N][M], <span class="hljs-type">int</span> B[M][N])</span> &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; M; j++) &#123;<br>            <span class="hljs-type">int</span> tmp = A[i][j];<br>            B[j][i] = tmp;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以第1行为例，在从内存读 <code>A[0][0]</code> 的时候，除了 <code>A[0][0]</code> 被加载到缓存中，它之后的 <code>A[0][1]---A[0][7]</code> 也会被加载进缓存。</p>
+<p>但是内容写入 <code>B</code> 矩阵的时候是一列一列地写入，在列上相邻的元素不在一个内存块上，这样每次写入都不命中缓存。并且一列写完之后再返回，原来的缓存可能被覆盖了，这样就又会不命中，我们来定量分析。</p>
+<p>缓存只够存储一个矩阵的四分之一，<code>A</code>中的元素对应的缓存行每隔8行就会重复。<code>A</code>和<code>B</code>的地址由于取余关系，每个元素对应的地址是相同的</p>
+<p>对于<code>A</code>，每8个<code>int</code>就会占满缓存的一组，所以每一行会有 32&#x2F;8 &#x3D; 4 次不命中；而对于<code>B</code>，考虑最坏情况，每一列都有 32 次不命中，由此，算出总不命中次数为 4 × 32 + 32 × 32 &#x3D; 1152。拿程序跑一下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171842802.png" srcset="/img/loading.gif" lazyload alt="最简单转置测试"></p>
+<p>结果是1183，这是对角线部分两者冲突造成的</p>
+<table>
+<thead>
+<tr>
+<th>D</th>
+<th>D</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>在写入<code>B</code>的前 8 行后，<code>B</code>的<code>D</code>区域就全部进入了缓存，此时如果能对<code>D</code>进行操作，那么就能利用上缓存的内容，不会<code>miss</code>；但是，暴力解法接下来操作的是<code>C</code>，每一个元素的写都要驱逐之前的缓存区，当来到第 2 列继续写<code>D</code>时，它对应的缓存行很可能已经被驱逐了，于是又要<code>miss</code>，也就是说，暴力解法的问题在于没有充分利用上已经进入缓存的元素</p>
+<p>分块解决的就是同一个矩阵内部缓存块相互替换的问题。</p>
+<p>由上述分析，显然应考虑 8 × 8 分块，这样在块的内部不会冲突，接下来判断<code>A</code>与<code>B</code>之间会不会冲突</p>
+<p><code>A</code>中块占用的是缓存的第 0，4，8，12，16，20，24，28组，而<code>B</code>中块占用的是缓存的第2，6，10，14，18，16，30组，刚好不会冲突。事实上，<strong>除了对角线</strong>，<code>A</code>与<code>B</code>中对应的块都不会冲突。所以，我们的想法是可行的，写出代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">transpose_submit</span><span class="hljs-params">(<span class="hljs-type">int</span> M, <span class="hljs-type">int</span> N, <span class="hljs-type">int</span> A[N][M], <span class="hljs-type">int</span> B[M][N])</span><br>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i += <span class="hljs-number">8</span>)<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; M; j += <span class="hljs-number">8</span>)<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">8</span>; k++)<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> s = <span class="hljs-number">0</span>; s &lt; <span class="hljs-number">8</span>; s++)<br>                    B[j + s][i + k] = A[i + k][j + s];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于<code>A</code>中每一个操作块，只有每一行的第一个元素会不命中，所以为8次不命中；对于<code>B</code>中每一个操作块，只有每一列的第一个元素会不命中，所以也为 8 次不命中。总共<code>miss</code>次数为：8 × 16 × 2 &#x3D; 256</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171853615.png" srcset="/img/loading.gif" lazyload alt="第二次测试"></p>
+<p>以<code>A</code>的一个对角线块<code>p</code>，<code>B</code>与<code>p</code>相应的对角线块<code>q</code>为例，复制前， <code>p</code> 在缓存中。 复制时，<code>q</code>会驱逐<code>p</code>。 下一个开始复制 <code>p</code> 又被重新加载进入缓存驱逐 <code>q</code>，这样就会多产生两次<code>miss</code>。</p>
+<p>如何解决这种问题呢？题目给了我们提示：</p>
+<blockquote>
+<p>You are allowed to define at most 12 local variables of type int per transpose function</p>
+</blockquote>
+<p>考虑使用 8 个本地变量一次性存下 <code>A</code> 的一行后，再复制给 <code>B</code>，代码如下：</p>
+<p>对于非对角线上的块，本身就没有额外的冲突；对于对角线上的块，写入<code>A</code>每一行的第一个元素后，这一行的元素都进入了缓存，我们就立即用本地变量存下这 8 个元素，随后再复制给<code>B</code>。这样，就避免了第一个元素复制时，<code>B</code>把<code>A</code>的缓冲行驱逐，导致没有利用上<code>A</code>的缓冲。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">transpose_submit</span><span class="hljs-params">(<span class="hljs-type">int</span> M, <span class="hljs-type">int</span> N, <span class="hljs-type">int</span> A[N][M], <span class="hljs-type">int</span> B[M][N])</span><br>&#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">32</span>; i += <span class="hljs-number">8</span>)<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">32</span>; j += <span class="hljs-number">8</span>)<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = i; k &lt; i + <span class="hljs-number">8</span>; k++)<br>            &#123;<br>                <span class="hljs-type">int</span> a_0 = A[k][j];<br>                <span class="hljs-type">int</span> a_1 = A[k][j+<span class="hljs-number">1</span>];<br>                <span class="hljs-type">int</span> a_2 = A[k][j+<span class="hljs-number">2</span>];<br>                <span class="hljs-type">int</span> a_3 = A[k][j+<span class="hljs-number">3</span>];<br>                <span class="hljs-type">int</span> a_4 = A[k][j+<span class="hljs-number">4</span>];<br>                <span class="hljs-type">int</span> a_5 = A[k][j+<span class="hljs-number">5</span>];<br>                <span class="hljs-type">int</span> a_6 = A[k][j+<span class="hljs-number">6</span>];<br>                <span class="hljs-type">int</span> a_7 = A[k][j+<span class="hljs-number">7</span>];<br>                B[j][k] = a_0;<br>                B[j+<span class="hljs-number">1</span>][k] = a_1;<br>                B[j+<span class="hljs-number">2</span>][k] = a_2;<br>                B[j+<span class="hljs-number">3</span>][k] = a_3;<br>                B[j+<span class="hljs-number">4</span>][k] = a_4;<br>                B[j+<span class="hljs-number">5</span>][k] = a_5;<br>                B[j+<span class="hljs-number">6</span>][k] = a_6;<br>                B[j+<span class="hljs-number">7</span>][k] = a_7;<br>            &#125;         <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171855951.png" srcset="/img/loading.gif" lazyload alt="第三次测试"></p>
+<h4 id="64-64"><a href="#64-64" class="headerlink" title="64*64"></a>64*64</h4><p>每4行就会占满一行缓存，先考虑先考虑 4 × 4 分块，结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171905736.png" srcset="/img/loading.gif" lazyload alt="64*64第一次测试"></p>
+<p>还是考虑 8 × 8 分块，由于存在着每 4 行就会占满一个缓存的问题，在分块内部处理时就需要技巧了，我们把分块内部分成 4 个 4 × 4 的小分块分别处理：</p>
+<ul>
+<li>第一步，将<code>A</code>的左上和右上一次性复制给<code>B</code></li>
+<li>第二步，用本地变量把<code>B</code>的右上角存储下来</li>
+<li>第三步，将<code>A</code>的左下复制给<code>B</code>的右上</li>
+<li>第四步，利用第二步存储<code>B</code>的右上角的本地变量，把<code>A</code>的右上复制给<code>B</code>的左下</li>
+<li>第五步，把<code>A</code>的右下复制给<code>B</code>的右下</li>
+</ul>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs inform7">void transpose_64x64(int M, int N, int A<span class="hljs-comment">[N]</span><span class="hljs-comment">[M]</span>, int B<span class="hljs-comment">[M]</span><span class="hljs-comment">[N]</span>)<br>&#123;<br>    int a_0, a_1, a_2, a_3, a_4, a_5, a_6, a_7;<br>    for (int i = 0; i &lt; 64; i += 8)&#123;<br>        for (int j = 0; j &lt; 64; j += 8)&#123;<br>            for (int k = i; k &lt; i + 4; k++)&#123;<br>                // 得到A的第1,2块<br>                a_0 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 0]</span>;<br>                a_1 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 1]</span>;<br>                a_2 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 2]</span>;<br>                a_3 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 3]</span>;<br>                a_4 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 4]</span>;<br>                a_5 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 5]</span>;<br>                a_6 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 6]</span>;<br>                a_7 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 7]</span>;<br>                // 复制给B的第1,2块<br>                B<span class="hljs-comment">[j + 0]</span><span class="hljs-comment">[k]</span> = a_0;<br>                B<span class="hljs-comment">[j + 1]</span><span class="hljs-comment">[k]</span> = a_1;<br>                B<span class="hljs-comment">[j + 2]</span><span class="hljs-comment">[k]</span> = a_2;<br>                B<span class="hljs-comment">[j + 3]</span><span class="hljs-comment">[k]</span> = a_3;<br>                B<span class="hljs-comment">[j + 0]</span><span class="hljs-comment">[k + 4]</span> = a_4;<br>                B<span class="hljs-comment">[j + 1]</span><span class="hljs-comment">[k + 4]</span> = a_5;<br>                B<span class="hljs-comment">[j + 2]</span><span class="hljs-comment">[k + 4]</span> = a_6;<br>                B<span class="hljs-comment">[j + 3]</span><span class="hljs-comment">[k + 4]</span> = a_7;<br>            &#125;<br>            for (int k = j; k &lt; j + 4; k++)&#123;<br>                // 得到B的第2块<br>                a_0 = B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 4]</span>;<br>                a_1 = B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 5]</span>;<br>                a_2 = B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 6]</span>;<br>                a_3 = B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 7]</span>;<br>                // 得到A的第3块<br>                a_4 = A<span class="hljs-comment">[i + 4]</span><span class="hljs-comment">[k]</span>;<br>                a_5 = A<span class="hljs-comment">[i + 5]</span><span class="hljs-comment">[k]</span>;<br>                a_6 = A<span class="hljs-comment">[i + 6]</span><span class="hljs-comment">[k]</span>;<br>                a_7 = A<span class="hljs-comment">[i + 7]</span><span class="hljs-comment">[k]</span>;<br>                // 复制给B的第2块<br>                B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 4]</span> = a_4;<br>                B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 5]</span> = a_5;<br>                B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 6]</span> = a_6;<br>                B<span class="hljs-comment">[k]</span><span class="hljs-comment">[i + 7]</span> = a_7;<br>                // B原来的第2块移动到第3块<br>                B<span class="hljs-comment">[k + 4]</span><span class="hljs-comment">[i + 0]</span> = a_0;<br>                B<span class="hljs-comment">[k + 4]</span><span class="hljs-comment">[i + 1]</span> = a_1;<br>                B<span class="hljs-comment">[k + 4]</span><span class="hljs-comment">[i + 2]</span> = a_2;<br>                B<span class="hljs-comment">[k + 4]</span><span class="hljs-comment">[i + 3]</span> = a_3;<br>            &#125;<br>            for (int k = i + 4; k &lt; i + 8; k++)<br>            &#123;<br>                // 处理第4块<br>                a_4 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 4]</span>;<br>                a_5 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 5]</span>;<br>                a_6 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 6]</span>;<br>                a_7 = A<span class="hljs-comment">[k]</span><span class="hljs-comment">[j + 7]</span>;<br>                B<span class="hljs-comment">[j + 4]</span><span class="hljs-comment">[k]</span> = a_4;<br>                B<span class="hljs-comment">[j + 5]</span><span class="hljs-comment">[k]</span> = a_5;<br>                B<span class="hljs-comment">[j + 6]</span><span class="hljs-comment">[k]</span> = a_6;<br>                B<span class="hljs-comment">[j + 7]</span><span class="hljs-comment">[k]</span> = a_7;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171910654.png" srcset="/img/loading.gif" lazyload alt="64*64第二次测试"></p>
+<h4 id="61-67"><a href="#61-67" class="headerlink" title="61*67"></a>61*67</h4><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs excel">void transpose_61x67(<span class="hljs-built_in">int</span> M, <span class="hljs-built_in">int</span> <span class="hljs-built_in">N</span>, <span class="hljs-built_in">int</span> A[<span class="hljs-built_in">N</span>][M], <span class="hljs-built_in">int</span> B[M][<span class="hljs-built_in">N</span>])&#123;<br>    for (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">N</span>; i += <span class="hljs-number">16</span>)<br>        for (<span class="hljs-built_in">int</span> j = <span class="hljs-number">0</span>; j &lt; M; j += <span class="hljs-number">16</span>)<br>            for (<span class="hljs-built_in">int</span> k = i; k &lt; i + <span class="hljs-number">16</span> &amp;&amp; k &lt; <span class="hljs-built_in">N</span>; k++)<br>                for (<span class="hljs-built_in">int</span> s = j; s &lt; j + <span class="hljs-number">16</span> &amp;&amp; s &lt; M; s++)<br>                    B[s][k] = A[k][s];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171914483.png" srcset="/img/loading.gif" lazyload alt="61*67测试"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202311171938540.png" srcset="/img/loading.gif" lazyload alt="总成绩"></p>
+<ul>
+<li>太库鲁西了，太菜了做不出来，参考了许多大佬的代码，逻辑思维能力太差劲了</li>
+<li>整个lab向我们展示了计算机缓存的美。个人感觉替换策略可以重新思考怎么优化；在看书就能意识到仅仅是代码上的不同就能带来性能上的巨大差距。</li>
+</ul>
 
                 
               </div>
