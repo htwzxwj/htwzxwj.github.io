@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Aono">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="csapp lab arch_lab初见arch labIn this lab, you will learn about the design and implementation of a pipelined Y86-64 processor, optimizing both it and a benchmark program to maximize performance. You are">
+<meta property="og:type" content="article">
+<meta property="og:title" content="csapp arch_lab">
+<meta property="og:url" content="http://example.com/2023/09/10/csapp-arch-lab/index.html">
+<meta property="og:site_name" content="End0rph1n&#39;s  blog">
+<meta property="og:description" content="csapp lab arch_lab初见arch labIn this lab, you will learn about the design and implementation of a pipelined Y86-64 processor, optimizing both it and a benchmark program to maximize performance. You are">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101138376.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101512757.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101336261.png">
+<meta property="article:published_time" content="2023-09-10T07:11:26.000Z">
+<meta property="article:modified_time" content="2023-09-10T07:12:27.761Z">
+<meta property="article:author" content="Aono">
+<meta property="article:tag" content="architecure">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101138376.png">
+  
+  
+  
+  <title>csapp arch_lab - End0rph1n&#39;s  blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>無限進步</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="csapp arch_lab"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-10 15:11" pubdate>
+          2023年9月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          121 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">csapp arch_lab</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="csapp-lab-arch-lab"><a href="#csapp-lab-arch-lab" class="headerlink" title="csapp lab arch_lab"></a>csapp lab arch_lab</h1><h2 id="初见arch-lab"><a href="#初见arch-lab" class="headerlink" title="初见arch lab"></a>初见arch lab</h2><p>In this lab, you will learn about the design and implementation of a pipelined Y86-64 processor, optimizing both it and a benchmark program to maximize performance. You are allowed to make any semanticspreserving transformation to the benchmark program, or to make enhancements to the pipelined processor, or both. When you have completed the lab, you will have a keen appreciation for the interactions between code and hardware that affect the performance of your programs. </p>
+<p>The lab is organized into three parts, each with its own handin. In Part A you will write some simple Y86-64 programs and become familiar with the Y86-64 tools. In Part B, you will extend the SEQ simulator with a new instruction. These two parts will prepare you for Part C, the heart of the lab, where you will optimize the Y86-64 benchmark program and the processor design.</p>
+<h2 id="Part-A"><a href="#Part-A" class="headerlink" title="Part A"></a>Part A</h2><p>这一部分主要使用Y86-64汇编语言改写C语言程序，示例在<code>example.c</code>中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* linked list element */</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ELE</span> &#123;</span><br>    <span class="hljs-type">long</span> val;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ELE</span> *<span class="hljs-title">next</span>;</span><br>&#125; *list_ptr;<br></code></pre></td></tr></table></figure>
+
+<p>可以看到其给出了<code>链表</code>的数据结构定义</p>
+<h3 id="sumlist"><a href="#sumlist" class="headerlink" title="sumlist"></a>sumlist</h3><p>第一个程序要求<strong>迭代</strong>求和链表元素之和，我们的程序应该包括设计栈空间，引用函数，并且停止。同时给出了测试所用的案例。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* sum_list - Sum the elements of a linked list */</span><br><span class="hljs-type">long</span> <span class="hljs-title function_">sum_list</span><span class="hljs-params">(list_ptr ls)</span><br>&#123;<br>    <span class="hljs-type">long</span> val = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span> (ls) &#123;<br>	val += ls-&gt;val;<br>	ls = ls-&gt;next;<br>    &#125;<br>    <span class="hljs-keyword">return</span> val;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>一个简单但标准的Y86-64程序结构可以参考书上的252页。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># sum_list - Sum the elements of a linked list</span><br><span class="hljs-comment"># Execution begins at address 0</span><br>        .pos <span class="hljs-number">0</span><br>        irmovq stack, %rsp      <span class="hljs-comment"># Set up stack pointer</span><br>        call main               <span class="hljs-comment"># Execute main program</span><br>        halt                    <span class="hljs-comment"># Terminate program</span><br><br><span class="hljs-comment"># Sample linked list</span><br>        .align <span class="hljs-number">8</span><br>ele1:<br>        .quad <span class="hljs-number">0x00a</span><br>        .quad ele2<br>ele2:<br>        .quad <span class="hljs-number">0x0b0</span><br>        .quad ele3<br>ele3:<br>        .quad <span class="hljs-number">0xc00</span><br>        .quad <span class="hljs-number">0</span><br><br>main:<br>        irmovq ele1,%rdi<br>        call sum_list<br>        ret<br><br><span class="hljs-comment"># long sum_list(list_ptr ls)</span><br><span class="hljs-comment"># start in %rdi</span><br>sum_list:<br>        irmovq $0, %rax         <span class="hljs-comment"># rax stores val</span><br>        jmp test<br><br>loop:<br>        mrmov<span class="hljs-string">q (%rdi)</span>, %rsi     <br>        addq %rsi, %rax<br>        mrmovq <span class="hljs-number">8</span>(%rdi), %rdi<br><br>test:<br>        andq %rdi, %rdi<br>        jne loop<br>        ret<br><br><span class="hljs-comment"># Stack starts here and grows to lower addresses</span><br>        .pos <span class="hljs-number">0x200</span><br>stack:<br><br></code></pre></td></tr></table></figure>
+
+<p>使用yas编译，使用yis模拟运行程序</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101138376.png" srcset="/img/loading.gif" lazyload alt="sum.yo"></p>
+<p>看到rax寄存器中结果为0xcba，程序运行正确。</p>
+<h3 id="rsum-list"><a href="#rsum-list" class="headerlink" title="rsum_list"></a>rsum_list</h3><p>使用<strong>递归</strong>计算链表元素之和。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* rsum_list - Recursive version of sum_list */</span><br><span class="hljs-type">long</span> <span class="hljs-title function_">rsum_list</span><span class="hljs-params">(list_ptr ls)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (!ls)<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">else</span> &#123;<br>	<span class="hljs-type">long</span> val = ls-&gt;val;<br>	<span class="hljs-type">long</span> rest = rsum_list(ls-&gt;next);<br>	<span class="hljs-keyword">return</span> val + rest;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>代码如下：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># /* rsum_list - Recursive version of sum_list */</span><br><span class="hljs-comment"># Execution begins at address 0</span><br>        .pos <span class="hljs-number">0</span><br>        irmovq stack, %rsp      <span class="hljs-comment"># Set up stack pointer</span><br>        call main               <span class="hljs-comment"># Execute main program</span><br>        halt                    <span class="hljs-comment"># Terminate program</span><br><br><span class="hljs-comment"># Sample linked list</span><br>        .align <span class="hljs-number">8</span><br>ele1:<br>        .quad <span class="hljs-number">0x00a</span><br>        .quad ele2<br>ele2:<br>        .quad <span class="hljs-number">0x0b0</span><br>        .quad ele3<br>ele3:<br>        .quad <span class="hljs-number">0xc00</span><br>        .quad <span class="hljs-number">0</span><br><br>main:<br>        irmovq ele1,%rdi<br>        call rsum_list<br>        ret<br><br><span class="hljs-comment"># long sum_list(list_ptr ls)</span><br><span class="hljs-comment"># start in %rdi</span><br>rsum_list:<br>        andq %rdi, %rdi<br>        je <span class="hljs-keyword">return</span>               <span class="hljs-comment"># if(!ls)</span><br>        mrmov<span class="hljs-string">q (%rdi)</span>, %rbx     <span class="hljs-comment"># val = ls-&gt;val</span><br>        mrmovq <span class="hljs-number">8</span>(%rdi), %rdi    <span class="hljs-comment"># ls = ls-&gt;next</span><br>        pushq %rbx<br>        call rsum_list          <span class="hljs-comment"># rsum_list(ls-&gt;next)</span><br>        popq %rbx<br>        addq %rbx, %rax         <span class="hljs-comment"># val + rest</span><br>        ret<br><span class="hljs-keyword">return</span>:<br>        irmovq $0, %rax<br>        ret<br><br><br><span class="hljs-comment"># Stack starts here and grows to lower addresses</span><br>        .pos <span class="hljs-number">0x200</span><br>stack:<br><br></code></pre></td></tr></table></figure>
+
+<p>测试结果如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101512757.png" srcset="/img/loading.gif" lazyload alt="rsum.yo"></p>
+<p>rax寄存器显示0xcba，结果正确。</p>
+<h3 id="copy"><a href="#copy" class="headerlink" title="copy"></a>copy</h3><p>要求数组各元素的按位异或值</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* copy_block - Copy src to dest and return xor checksum of src */</span><br><span class="hljs-type">long</span> <span class="hljs-title function_">copy_block</span><span class="hljs-params">(<span class="hljs-type">long</span> *src, <span class="hljs-type">long</span> *dest, <span class="hljs-type">long</span> len)</span><br>&#123;<br>    <span class="hljs-type">long</span> result = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span> (len &gt; <span class="hljs-number">0</span>) &#123;<br>	<span class="hljs-type">long</span> val = *src++;<br>	*dest++ = val;<br>	result ^= val;<br>	len--;<br>    &#125;<br>    <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs perl">/* copy_block - Copy src to dest <span class="hljs-keyword">and</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">xor</span> checksum of src */<br><span class="hljs-comment"># Execution begins at address 0</span><br>        .pos <span class="hljs-number">0</span><br>        irmovq stack, %rsp      <span class="hljs-comment"># Set up stack pointer</span><br>        call main               <span class="hljs-comment"># Execute main program</span><br>        halt                    <span class="hljs-comment"># Terminate program</span><br><br><span class="hljs-comment"># Sample</span><br>        .align <span class="hljs-number">8</span><br><span class="hljs-comment"># Source block</span><br>src:<br>        .quad <span class="hljs-number">0x00a</span><br>        .quad <span class="hljs-number">0x0b0</span><br>        .quad <span class="hljs-number">0xc00</span><br><br><span class="hljs-comment"># Destination block</span><br>dest:<br>        .quad <span class="hljs-number">0x111</span><br>        .quad <span class="hljs-number">0x222</span><br>        .quad <span class="hljs-number">0x333</span><br><br>main:<br>        irmovq src, %rdi        <span class="hljs-comment"># src</span><br>        irmovq dest, %rsi       <span class="hljs-comment"># dest</span><br>        irmovq $3, %rdx         <span class="hljs-comment"># len</span><br>        call copy_block<br>        ret<br><br><span class="hljs-comment"># long copy_block(long *src, long *dest, long len)</span><br><span class="hljs-comment"># src in %rdi</span><br><span class="hljs-comment"># dest in %rsi</span><br><span class="hljs-comment"># len in %rdx</span><br>copy_block:<br>        irmovq $8, %r8<br>        irmovq $1, %r9<br>        irmovq $0, %rax<br>        andq %rdx, %rdx<br>        jmp test<br>loop:<br>        mrmov<span class="hljs-string">q (%rdi)</span>, %r10     <span class="hljs-comment"># val = *src1</span><br>        addq %r8, %rdi          <span class="hljs-comment"># src++</span><br>        rmmovq %r10, (%rsi)     <span class="hljs-comment"># *dest = val</span><br>        addq %r8, %rsi          <span class="hljs-comment"># dest++</span><br>        xorq %r10, %rax         <span class="hljs-comment"># result ^= val</span><br>        subq %r9, %rdx          <span class="hljs-comment"># len--.  Set CC</span><br>test:<br>        jne loop                <span class="hljs-comment"># Stop when 0</span><br>        ret<br><br><span class="hljs-comment"># Stack starts here and grows to lower addresses</span><br>        .pos <span class="hljs-number">0x200</span><br>stack:<br><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202309101336261.png" srcset="/img/loading.gif" lazyload alt="image-20230910133633223"></p>
+<p>结果正确</p>
+<h2 id="Part-B"><a href="#Part-B" class="headerlink" title="Part B"></a>Part B</h2><p><code>to extend the SEQ processor to support the iaddq</code>，</p>
+<p>让处理器支持iaddq指令，修改hcl文件。</p>
+<p>书中P264Y86-64处理器对一条指令的处理包括以下几个步骤：</p>
+<ul>
+<li><strong>取址：</strong>根据 PC 的值从内存中读取指令字节<ul>
+<li>指令指示符字节的两个四位部分，为<code>icode:ifun</code></li>
+<li>寄存器指示符字节，为 <code>rA</code>, <code>rB</code></li>
+<li>8字节常数字，为 <code>valC</code></li>
+<li>计算下一条指令地址，为 <code>valP</code></li>
+</ul>
+</li>
+<li><strong>译码：</strong>从寄存器读入最多两个操作数<ul>
+<li>由 <code>rA</code>, <code>rB</code> 指明的寄存器，读为 <code>valA</code>, <code>valB</code></li>
+<li>对于指令<code>popq</code>, <code>pushq</code>, <code>call</code>, <code>ret</code>也可能从<code>%rsp</code>中读</li>
+</ul>
+</li>
+<li><strong>执行：</strong>根据<code>ifun</code>计算，或计算内存引用的有效地址，或增加或减少栈指针<ul>
+<li>对上述三者之一进行的操作得到的值为<code>valE</code></li>
+<li>如果是计算，则设置条件码</li>
+<li>对于条件传送指令，检验条件码和传送条件，并据此更新目标寄存器</li>
+<li>对于跳转指令，决定是否选择分支</li>
+</ul>
+</li>
+<li><strong>访存：</strong>输入写入内存或从内存读出数据<ul>
+<li>若是从内存中读出数据，则读出的值为<code>valM</code></li>
+</ul>
+</li>
+<li><strong>写回：</strong>最多写两个结果到寄存器</li>
+<li><strong>更新 PC：</strong>将 PC 设置成下一条指令的地址</li>
+</ul>
+<p> 其执行过程与<code>OPq</code>和<code>irmovq</code>类似，</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c">指令为：iaddq V, rB<br>取指：<br>    icode:ifun &lt;- M_1[PC]<br>    rA:rB &lt;- M_1[PC+<span class="hljs-number">1</span>]<br>    valC &lt;- M_8[PC+<span class="hljs-number">2</span>]<br>    valP &lt;- PC+<span class="hljs-number">10</span><br><br>译码：<br>    valB &lt;- R[rB]<br><br>执行：<br>    valE &lt;-  valB + valC<br>    Set CC<br><br>访存：<br><br>写回：<br>    R[rB] &lt;- valE<br><br>更新PC：<br>    PC &lt;- valP<br></code></pre></td></tr></table></figure>
+
+<p>根据上述代码修改hcl文件，</p>
+<p>其中取值阶段i<code>nstr_valid</code> <code>need_regids</code> <code>need_valC</code>需要加上<code>iiaddq</code></p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">bool instr_valid</span> = icode in <br>    &#123; INOP, IHALT, IRRMOVQ, IIRMOVQ, IRMMOVQ, IMRMOVQ,<br>           IOPQ, IJXX, ICALL, IRET, IPUSHQ, IPOPQ, IIADDQ &#125;;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">bool need_regids</span> =<br>    icode in &#123; IRRMOVQ, IOPQ, IPUSHQ, IPOPQ, <br>             IIRMOVQ, IRMMOVQ, IMRMOVQ, IIADDQ &#125;;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">bool need_valC</span> =<br>    icode in &#123; IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL, IIADDQ &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>译码和写回 <code>srcB</code>（产生<code>valB</code>）的寄存器，需要在<code>rB</code>的括号中加上<code>iiaddq</code></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ada">word srcB = [<br>    icode <span class="hljs-keyword">in</span> &#123; IOPQ, IRMMOVQ, IMRMOVQ, IIADDQ  &#125; : <span class="hljs-type">rB</span>;<br>    icode <span class="hljs-keyword">in</span> &#123; IPUSHQ, IPOPQ, ICALL, IRET &#125; : <span class="hljs-type">RRSP</span>;<br>    <span class="hljs-number">1</span> : <span class="hljs-type">RNONE</span>;  # Don<span class="hljs-symbol">&#x27;t</span> need register<br>];<br></code></pre></td></tr></table></figure>
+
+<p><code>dst_E</code>表明写端口 E 的目的寄存器，计算出来的值<code>valE</code>将放在那里。最终结果要存放在<code>rB</code>中，需要在<code>rB</code>的前面加上<code>iiaddq</code></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ada">word dstE = [<br>    icode <span class="hljs-keyword">in</span> &#123; IRRMOVQ &#125; &amp;&amp; Cnd : <span class="hljs-type">rB</span>;<br>    icode <span class="hljs-keyword">in</span> &#123; IIRMOVQ, IOPQ, IIADDQ &#125; : <span class="hljs-type">rB</span>;<br>    icode <span class="hljs-keyword">in</span> &#123; IPUSHQ, IPOPQ, ICALL, IRET &#125; : <span class="hljs-type">RRSP</span>;<br>    <span class="hljs-number">1</span> : <span class="hljs-type">RNONE</span>;  # Don<span class="hljs-symbol">&#x27;t</span> write any register<br>];<br></code></pre></td></tr></table></figure>
+
+<p>执行阶段<code>ALU</code>对<code>aluA</code>和<code>aluB</code>进行计算，<code>aluA</code>可以是<code>valA</code>、<code>valC</code> 、<code>8</code>或<code>-8</code>，<code>aluB</code>只能是<code>valB</code></p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-comment">## Select input A to ALU</span><br><span class="hljs-attribute">word aluA = [</span><br><span class="hljs-attribute">    icode in &#123; IRRMOVQ, IOPQ &#125;</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">valA;</span><br>    <span class="hljs-attribute">icode in &#123; IIRMOVQ, IRMMOVQ, IMRMOVQ, IIADDQ &#125;</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">valC;</span><br>    <span class="hljs-attribute">icode in &#123; ICALL, IPUSHQ &#125;</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">-8;</span><br>    <span class="hljs-attribute">icode in &#123; IRET, IPOPQ &#125;</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">8;</span><br>    <span class="hljs-comment"># Other instructions don&#x27;t need ALU</span><br><span class="hljs-attribute">];</span><br><span class="hljs-attribute"></span><br><span class="hljs-attribute">## Select input B to ALU</span><br><span class="hljs-attribute">word aluB = [</span><br><span class="hljs-attribute">    icode in &#123; IRMMOVQ, IMRMOVQ, IOPQ, ICALL, </span><br><span class="hljs-attribute">              IPUSHQ, IRET, IPOPQ, IIADDQ &#125;</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">valB;</span><br>    <span class="hljs-attribute">icode in &#123; IRRMOVQ, IIRMOVQ &#125;</span><span class="hljs-punctuation"> :</span> <span class="hljs-string">0;</span><br>    <span class="hljs-comment"># Other instructions don&#x27;t need ALU</span><br>];<br></code></pre></td></tr></table></figure>
+
+<p>同时需要更新条件码寄存器</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">bool set_cc</span> = icode in &#123; IOPQ,IIADDQ &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>iiaddq不涉及访存和转移操作，无修改访存阶段和更新PC阶段。</p>
+<p>使用lab附的SEQ模拟器的TTY模式对HCL文件进行测试。（同时也建议大家去看看GUI模式，很惊艳</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs routeros">voidsolar@admin:~/csapp_lab/archlab-handout/sim/seq$ ./ssim -t <span class="hljs-built_in">..</span>/y86-code/asumi.yo<br>Y86-64 Processor: seq-full.hcl<br>137 bytes of code read<br><span class="hljs-keyword">IF</span>: Fetched irmovq at 0x0.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rsp, valC = 0x100<br><span class="hljs-keyword">IF</span>: Fetched call at 0xa.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x38<br>Wrote 0x13 <span class="hljs-keyword">to</span><span class="hljs-built_in"> address </span>0xf8<br><span class="hljs-keyword">IF</span>: Fetched irmovq at 0x38.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x18<br><span class="hljs-keyword">IF</span>: Fetched irmovq at 0x42.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rsi, valC = 0x4<br><span class="hljs-keyword">IF</span>: Fetched call at 0x4c.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x56<br>Wrote 0x55 <span class="hljs-keyword">to</span><span class="hljs-built_in"> address </span>0xf0<br><span class="hljs-keyword">IF</span>: Fetched xorq at 0x56.  <span class="hljs-attribute">ra</span>=%rax, <span class="hljs-attribute">rb</span>=%rax, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched andq at 0x58.  <span class="hljs-attribute">ra</span>=%rsi, <span class="hljs-attribute">rb</span>=%rsi, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched jmp at 0x5a.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x83<br><span class="hljs-keyword">IF</span>: Fetched jne at 0x83.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x63<br><span class="hljs-keyword">IF</span>: Fetched mrmovq at 0x63.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched addq at 0x6d.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rax, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x6f.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x8<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x79.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rsi, valC = 0xffffffffffffffff<br><span class="hljs-keyword">IF</span>: Fetched jne at 0x83.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x63<br><span class="hljs-keyword">IF</span>: Fetched mrmovq at 0x63.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched addq at 0x6d.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rax, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x6f.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x8<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x79.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rsi, valC = 0xffffffffffffffff<br><span class="hljs-keyword">IF</span>: Fetched jne at 0x83.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x63<br><span class="hljs-keyword">IF</span>: Fetched mrmovq at 0x63.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched addq at 0x6d.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rax, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x6f.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x8<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x79.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rsi, valC = 0xffffffffffffffff<br><span class="hljs-keyword">IF</span>: Fetched jne at 0x83.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x63<br><span class="hljs-keyword">IF</span>: Fetched mrmovq at 0x63.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched addq at 0x6d.  <span class="hljs-attribute">ra</span>=%r10, <span class="hljs-attribute">rb</span>=%rax, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x6f.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rdi, valC = 0x8<br><span class="hljs-keyword">IF</span>: Fetched iaddq at 0x79.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=%rsi, valC = 0xffffffffffffffff<br><span class="hljs-keyword">IF</span>: Fetched jne at 0x83.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x63<br><span class="hljs-keyword">IF</span>: Fetched ret at 0x8c.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched ret at 0x55.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x0<br><span class="hljs-keyword">IF</span>: Fetched halt at 0x13.  <span class="hljs-attribute">ra</span>=----, <span class="hljs-attribute">rb</span>=----, valC = 0x0<br>32 instructions executed<br>Status = HLT<br>Condition Codes: <span class="hljs-attribute">Z</span>=1 <span class="hljs-attribute">S</span>=0 <span class="hljs-attribute">O</span>=0<br>Changed Register State:<br>%rax:   0x0000000000000000      0x0000abcdabcdabcd<br>%rsp:   0x0000000000000000      0x0000000000000100<br>%rdi:   0x0000000000000000      0x0000000000000038<br>%r10:   0x0000000000000000      0x0000a000a000a000<br>Changed Memory State:<br>0x00f0: 0x0000000000000000      0x0000000000000055<br>0x00f8: 0x0000000000000000      0x0000000000000013<br>ISA Check Succeeds<br></code></pre></td></tr></table></figure>
+
+<h4 id="基准测试"><a href="#基准测试" class="headerlink" title="基准测试"></a>基准测试</h4><p>运行<strong>基准测试</strong>保证指令集原有指令没有被破坏</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs gradle">voidsolar@admin:~<span class="hljs-regexp">/csapp_lab/</span>archlab-handout<span class="hljs-regexp">/sim/</span>seq$ cd ../y86-code; make testssim<br>..<span class="hljs-regexp">/seq/</span>ssim -t asum.yo &gt; asum.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t asumr.yo &gt; asumr.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t cjr.yo &gt; cjr.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t j-cc.yo &gt; j-cc.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t poptest.yo &gt; poptest.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t pushquestion.yo &gt; pushquestion.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t pushtest.yo &gt; pushtest.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog1.yo &gt; prog1.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog2.yo &gt; prog2.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog3.yo &gt; prog3.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog4.yo &gt; prog4.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog5.yo &gt; prog5.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog6.yo &gt; prog6.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog7.yo &gt; prog7.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t prog8.yo &gt; prog8.seq<br>..<span class="hljs-regexp">/seq/</span>ssim -t ret-hazard.yo &gt; ret-hazard.seq<br><span class="hljs-keyword">grep</span> <span class="hljs-string">&quot;ISA Check&quot;</span> *.seq<br>asum.seq:ISA Check Succeeds<br>asumr.seq:ISA Check Succeeds<br>cjr.seq:ISA Check Succeeds<br>j-cc.seq:ISA Check Succeeds<br>poptest.seq:ISA Check Succeeds<br>prog1.seq:ISA Check Succeeds<br>prog2.seq:ISA Check Succeeds<br>prog3.seq:ISA Check Succeeds<br>prog4.seq:ISA Check Succeeds<br>prog5.seq:ISA Check Succeeds<br>prog6.seq:ISA Check Succeeds<br>prog7.seq:ISA Check Succeeds<br>prog8.seq:ISA Check Succeeds<br>pushquestion.seq:ISA Check Succeeds<br>pushtest.seq:ISA Check Succeeds<br>ret-hazard.seq:ISA Check Succeeds<br>rm asum.seq asumr.seq cjr.seq j-cc.seq poptest.seq pushquestion.seq pushtest.seq prog1.seq prog2.seq prog3.seq prog4.seq prog5.seq prog6.seq prog7.seq prog8.seq ret-hazard.seq<br></code></pre></td></tr></table></figure>
+
+<h4 id="回归测试"><a href="#回归测试" class="headerlink" title="回归测试"></a>回归测试</h4><p>测试除了iaddq以外的指令</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk">voidsolar@admin:~<span class="hljs-regexp">/csapp_lab/</span>archlab-handout<span class="hljs-regexp">/sim/y</span>86-code$ cd ..<span class="hljs-regexp">/ptest; make SIM=../</span>seq/ssim<br>.<span class="hljs-regexp">/optest.pl -s ../</span>seq/ssim <br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">49</span> ISA Checks Succeed<br>.<span class="hljs-regexp">/jtest.pl -s ../</span>seq/ssim <br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">64</span> ISA Checks Succeed<br>.<span class="hljs-regexp">/ctest.pl -s ../</span>seq/ssim <br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">22</span> ISA Checks Succeed<br>.<span class="hljs-regexp">/htest.pl -s ../</span>seq/ssim <br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">600</span> ISA Checks Succeed<br></code></pre></td></tr></table></figure>
+
+<p>测试自己实现的iaddq</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk">voidsolar@admin:~<span class="hljs-regexp">/csapp_lab/</span>archlab-handout<span class="hljs-regexp">/sim/</span>ptest$ cd ..<span class="hljs-regexp">/ptest; make SIM=../</span>seq/ssim TFLAGS=-i<br>.<span class="hljs-regexp">/optest.pl -s ../</span>seq/ssim -i<br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">58</span> ISA Checks Succeed<br>.<span class="hljs-regexp">/jtest.pl -s ../</span>seq/ssim -i<br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">96</span> ISA Checks Succeed<br>.<span class="hljs-regexp">/ctest.pl -s ../</span>seq/ssim -i<br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">22</span> ISA Checks Succeed<br>.<span class="hljs-regexp">/htest.pl -s ../</span>seq/ssim -i<br>Simulating with ..<span class="hljs-regexp">/seq/</span>ssim<br>  All <span class="hljs-number">756</span> ISA Checks Succeed<br></code></pre></td></tr></table></figure>
+
+<p>至此Part B全部完成</p>
+<h2 id="Part-C"><a href="#Part-C" class="headerlink" title="Part C"></a>Part C</h2><p>我们需要修改HCL和ncopy来优化程序，通过程序的效率计算分数</p>
+<p>首先iaddq是一条效率很高的指令，它能够将两步化为一步。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * ncopy - copy src to dst, returning number of positive ints</span><br><span class="hljs-comment"> * contained in src array.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">word_t</span> <span class="hljs-title function_">ncopy</span><span class="hljs-params">(<span class="hljs-type">word_t</span> *src, <span class="hljs-type">word_t</span> *dst, <span class="hljs-type">word_t</span> len)</span><br>&#123;<br>    <span class="hljs-type">word_t</span> count = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">word_t</span> val;<br><br>    <span class="hljs-keyword">while</span> (len &gt; <span class="hljs-number">0</span>) &#123;<br>    val = *src++;<br>    *dst++ = val;<br>    <span class="hljs-keyword">if</span> (val &gt; <span class="hljs-number">0</span>)<br>        count++;<br>    len--;<br>    &#125;<br>    <span class="hljs-keyword">return</span> count;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>原汇编代码如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs text"># You can modify this portion<br>    # Loop header<br>    xorq %rax,%rax      # count = 0;<br>    andq %rdx,%rdx      # len &lt;= 0?<br>    jle Done        # if so, goto Done:<br><br>Loop:   mrmovq (%rdi), %r10 # read val from src...<br>    rmmovq %r10, (%rsi) # ...and store it to dst<br>    andq %r10, %r10     # val &lt;= 0?<br>    jle Npos        # if so, goto Npos:<br>    irmovq $1, %r10<br>    addq %r10, %rax     # count++<br>Npos:   irmovq $1, %r10<br>    subq %r10, %rdx     # len--<br>    irmovq $8, %r10<br>    addq %r10, %rdi     # src++<br>    addq %r10, %rsi     # dst++<br>    andq %rdx,%rdx      # len &gt; 0?<br>    jg Loop         # if so, goto Loop:<br></code></pre></td></tr></table></figure>
+
+<p>利用iaddq替换原有的赋值指令。替换后</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># You can modify this portion</span><br>    <span class="hljs-comment"># Loop header</span><br>    xorq %rax,%rax      <span class="hljs-comment"># count = 0;</span><br>    andq %rdx,%rdx      <span class="hljs-comment"># len &lt;= 0?</span><br>    jle Done        <span class="hljs-comment"># if so, goto Done:</span><br><br>Loop:   <br>    mrmov<span class="hljs-string">q (%rdi)</span>, %r10 <span class="hljs-comment"># read val from src...</span><br>    rmmovq %r10, (%rsi) <span class="hljs-comment"># ...and store it to dst</span><br>    andq %r10, %r10     <span class="hljs-comment"># val &lt;= 0?</span><br>    jle Npos        <span class="hljs-comment"># if so, goto Npos:</span><br>    iaddq $1, %rax      <span class="hljs-comment"># count++</span><br>Npos:   <br>    iaddq $-<span class="hljs-number">1</span>, %rdx     <span class="hljs-comment"># len--</span><br>    iaddq $8, %rdi      <span class="hljs-comment"># src++</span><br>    iaddq $8, %rsi      <span class="hljs-comment"># dst++</span><br>    andq %rdx,%rdx      <span class="hljs-comment"># len &gt; 0?</span><br>    jg Loop         <span class="hljs-comment"># if so, goto Loop:</span><br></code></pre></td></tr></table></figure>
+
+<p>根据文档的提示，我们尝试使用循环展开对程序进行优化，循环展开通过增加每次迭代计算的元素的数量，减少循环的迭代次数来提升效率。</p>
+<p>本文在参考了别人的博文的基础上使用6路循环展开</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># Loop header</span><br>    andq %rdx,%rdx      <span class="hljs-comment"># len &lt;= 0?</span><br>    jmp test<br>Loop:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    rmmovq %r8,(%rsi)<br>    andq %r8,%r8<br>    jle Loop1<br>    iaddq $1,%rax<br>Loop1:<br>    mrmovq <span class="hljs-number">8</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">8</span>(%rsi)<br>    andq %r8,%r8<br>    jle Loop2<br>    iaddq $1,%rax<br>Loop2:<br>    mrmovq <span class="hljs-number">16</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">16</span>(%rsi)<br>    andq %r8,%r8<br>    jle Loop3<br>    iaddq $1,%rax<br>Loop3:<br>    mrmovq <span class="hljs-number">24</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">24</span>(%rsi)<br>    andq %r8,%r8<br>    jle Loop4<br>    iaddq $1,%rax<br>Loop4:<br>    mrmovq <span class="hljs-number">32</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">32</span>(%rsi)<br>    andq %r8,%r8<br>    jle Loop5<br>    iaddq $1,%rax<br>Loop5:<br>    mrmovq <span class="hljs-number">40</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">40</span>(%rsi)<br>    iaddq $48,%rdi<br>    iaddq $48,%rsi<br>    andq %r8,%r8<br>    jle test<br>    iaddq $1,%rax   <br>test:<br>    iaddq $-<span class="hljs-number">6</span>, %rdx         <span class="hljs-comment"># 先减，判断够不够6个</span><br>    jge Loop                <span class="hljs-comment"># 6路展开</span><br>    iaddq $-<span class="hljs-number">8</span>,%rdi<br>    iaddq $-<span class="hljs-number">8</span>,%rsi<br>    iaddq $6, %rdx<br>    jmp test2               <span class="hljs-comment">#剩下的</span><br>Lore:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    rmmovq %r8,(%rsi)<br>    andq %r8,%r8<br>    jle test2<br>    iaddq $1,%rax<br>test2:<br>    iaddq $8,%rdi<br>    iaddq $8,%rsi<br>    iaddq $-<span class="hljs-number">1</span>, %rdx<br>    jge Lore<br></code></pre></td></tr></table></figure>
+
+<p><strong>逻辑简单</strong>：每次循环都对6个数进行复制，每次复制就设置一个条件语句判断返回时是否加1，对于剩下的数据每次循环只对1个数进行复制。</p>
+<p>此时测试发现对于小数据的CPE值非常大，需要考虑对小数据进行优化。</p>
+<p>于是对剩余数据采取3路循环展开。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs perl">test:<br>    iaddq $-<span class="hljs-number">6</span>, %rdx         <span class="hljs-comment"># 先减，判断够不够6个</span><br>    jge Loop                <span class="hljs-comment"># 6路展开</span><br>    iaddq $6, %rdx<br>    jmp test2               <span class="hljs-comment">#剩下的</span><br><br>L:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    rmmovq %r8,(%rsi)<br>    andq %r8,%r8<br>    jle L1<br>    iaddq $1,%rax<br>L1:<br>    mrmovq <span class="hljs-number">8</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">8</span>(%rsi)<br>    andq %r8,%r8<br>    jle L2<br>    iaddq $1,%rax<br>L2:<br>    mrmovq <span class="hljs-number">16</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">16</span>(%rsi)<br>    iaddq $24,%rdi<br>    iaddq $24,%rsi<br>    andq %r8,%r8<br>    jle test2<br>    iaddq $1,%rax<br>test2:<br>    iaddq $-<span class="hljs-number">3</span>, %rdx         <span class="hljs-comment"># 先减，判断够不够3个</span><br>    jge L<br>    iaddq $2, %rdx          <span class="hljs-comment"># -1则不剩了，直接Done,0 剩一个, 1剩2个</span><br>    je R<span class="hljs-number">0</span><br>    jl Done<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    rmmovq %r8,(%rsi)<br>    andq %r8,%r8<br>    jle R2<br>    iaddq $1,%rax<br>R2:<br>    mrmovq <span class="hljs-number">8</span>(%rdi),%r8<br>    rmmovq %r8,<span class="hljs-number">8</span>(%rsi)<br>    andq %r8,%r8<br>    jle Done<br>    iaddq $1,%rax<br>    jmp Done<br>R<span class="hljs-number">0</span>:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    rmmovq %r8,(%rsi)<br>    andq %r8,%r8<br>    jle Done<br>    iaddq $1,%rax<br></code></pre></td></tr></table></figure>
+
+<h4 id="消除气泡"><a href="#消除气泡" class="headerlink" title="消除气泡"></a>消除气泡</h4><p>程序多次使用</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs perl">mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>   rmmovq %r8,(%rsi)<br></code></pre></td></tr></table></figure>
+
+<p>使用转发避免数据冒险，也至少会有一个气泡。</p>
+<p>另外一种优化方法是多取一个寄存器，连续进行两次数据复制</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs perl">mrmov<span class="hljs-string">q (%rdi)</span>, %r8<br>mrmovq <span class="hljs-number">8</span>(%rdi), %r9<br>rmmovq %r8, (%rsi)<br>rmmovq %r9, <span class="hljs-number">8</span>(%rsi)<br></code></pre></td></tr></table></figure>
+
+<p>源程序如下</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># Loop header</span><br>    andq %rdx,%rdx      <span class="hljs-comment"># len &lt;= 0?</span><br>    jmp test<br>Loop:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    mrmovq <span class="hljs-number">8</span>(%rdi),%r9<br>    andq %r8,%r8<br>    rmmovq %r8,(%rsi)<br>    rmmovq %r9,<span class="hljs-number">8</span>(%rsi)<br>    jle Loop1<br>    iaddq $1,%rax<br>Loop1:  <br>    andq %r9,%r9<br>    jle Loop2<br>    iaddq $1,%rax<br>Loop2:<br>    mrmovq <span class="hljs-number">16</span>(%rdi),%r8<br>    mrmovq <span class="hljs-number">24</span>(%rdi),%r9<br>    andq %r8,%r8<br>    rmmovq %r8,<span class="hljs-number">16</span>(%rsi)<br>    rmmovq %r9,<span class="hljs-number">24</span>(%rsi)<br>    jle Loop3<br>    iaddq $1,%rax<br>Loop3:  <br>    andq %r9,%r9<br>    jle Loop4<br>    iaddq $1,%rax<br>Loop4:<br>    mrmovq <span class="hljs-number">32</span>(%rdi),%r8<br>    mrmovq <span class="hljs-number">40</span>(%rdi),%r9<br>    andq %r8,%r8<br>    rmmovq %r8,<span class="hljs-number">32</span>(%rsi)<br>    rmmovq %r9,<span class="hljs-number">40</span>(%rsi)<br>    jle Loop5<br>    iaddq $1,%rax<br>Loop5:<br>    iaddq $48,%rdi<br>    iaddq $48,%rsi      <br>    andq %r9,%r9<br>    jle test<br>    iaddq $1,%rax<br>test:<br>    iaddq $-<span class="hljs-number">6</span>, %rdx         <span class="hljs-comment"># 先减，判断够不够6个</span><br>    jge Loop                <span class="hljs-comment"># 6路展开</span><br>    iaddq $6, %rdx<br>    jmp test2               <span class="hljs-comment">#剩下的</span><br><br>L:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    andq %r8,%r8<br>    rmmovq %r8,(%rsi)<br>    jle L1<br>    iaddq $1,%rax<br>L1:<br>    mrmovq <span class="hljs-number">8</span>(%rdi),%r8<br>    andq %r8,%r8<br>    rmmovq %r8,<span class="hljs-number">8</span>(%rsi)<br>    jle L2<br>    iaddq $1,%rax<br>L2:<br>    mrmovq <span class="hljs-number">16</span>(%rdi),%r8<br>    iaddq $24,%rdi<br>    rmmovq %r8,<span class="hljs-number">16</span>(%rsi)<br>    iaddq $24,%rsi<br>    andq %r8,%r8<br>    jle test2<br>    iaddq $1,%rax<br>test2:<br>    iaddq $-<span class="hljs-number">3</span>, %rdx         <span class="hljs-comment"># 先减，判断够不够3个</span><br>    jge L<br>    iaddq $2, %rdx          <span class="hljs-comment"># -1则不剩了，直接Done,0 剩一个, 1剩2个</span><br>    je R<span class="hljs-number">0</span><br>    jl Done<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    mrmovq <span class="hljs-number">8</span>(%rdi),%r9<br>    rmmovq %r8,(%rsi)<br>    rmmovq %r9,<span class="hljs-number">8</span>(%rsi)<br>    andq %r8,%r8<br>    jle R2<br>    iaddq $1,%rax<br>R2:<br>    andq %r9,%r9<br>    jle Done<br>    iaddq $1,%rax<br>    jmp Done<br>R<span class="hljs-number">0</span>:<br>    mrmov<span class="hljs-string">q (%rdi)</span>,%r8<br>    andq %r8,%r8<br>    rmmovq %r8,(%rsi)<br>    jle Done<br>    iaddq $1,%rax<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Average</span> CPE     <span class="hljs-number">8</span>.<span class="hljs-number">16</span><br><span class="hljs-attribute">Score</span>   <span class="hljs-number">46</span>.<span class="hljs-number">7</span>/<span class="hljs-number">60</span>.<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>csapp第四章对于我来讲太难了，但在自己亲手设计指令的过程中能模拟流水线的工作流程并尝试优化，让我这个noob得以一窥处理器体系结构的冰山一角。</li>
+<li>本lab同之前的lab一样，诚意满满，yas、yis、ssim、psim等模拟、测试工具一应俱全，整个过程如同游戏闯关一样令人着迷。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSAPP/" class="category-chain-item">CSAPP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/architecure/" class="print-no-link">#architecure</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>csapp arch_lab</div>
+      <div>http://example.com/2023/09/10/csapp-arch-lab/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Aono</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/17/csapp-cash-lab/" title="csapp cash_lab">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">csapp cash_lab</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/07/csapp-data-lab/" title="csapp attack_lab">
+                        <span class="hidden-mobile">csapp attack_lab</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      分明平静无风，是因为追上了你的心吧
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
