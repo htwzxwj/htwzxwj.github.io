@@ -1,0 +1,1107 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/favicon.ico">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="End0rph1n">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="CSAPP：一封献给所有CSE学子的情书 本文是对Kcxain大佬的拙劣模仿  第一章 概述1.1 Hello简介hello 程序的生命周期是从一个高级 C 语言程序开始的。为了在系统上运行 hello.c 程序，每条 C 语句都必须被其他程序转化为一系列的低级机器语言指令。这样的转化成为编译，最后得以作为进程在计算机系统中运行，也就是 P2P 过程。 hello 的 P2P 过程是 gcc 调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="computer_systems">
+<meta property="og:url" content="http://htwzxwj.github.io/2024/02/03/csapp/index.html">
+<meta property="og:site_name" content="End0rph1n&#39;s  blog">
+<meta property="og:description" content="CSAPP：一封献给所有CSE学子的情书 本文是对Kcxain大佬的拙劣模仿  第一章 概述1.1 Hello简介hello 程序的生命周期是从一个高级 C 语言程序开始的。为了在系统上运行 hello.c 程序，每条 C 语句都必须被其他程序转化为一系列的低级机器语言指令。这样的转化成为编译，最后得以作为进程在计算机系统中运行，也就是 P2P 过程。 hello 的 P2P 过程是 gcc 调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031303524.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031423661.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031424794.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031439475.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031449974.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031503550.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031529252.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031530618.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031531957.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031531856.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031532465.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031533458.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031534763.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031535254.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031535437.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031536189.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031536803.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031536246.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031537137.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031538968.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031538341.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031543144.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031545870.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031545878.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031547971.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031547503.png">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-019d75eae05738e1eacc49ce6d2a669f_r.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031547487.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031548294.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031548263.png">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-e5a80277f98f1afb4e24cf8028e07e4b_r.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-70fee69d9718e2b0b80fb1e31e2be2ca_r.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031548255.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031551956.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031551966.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031552271.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031552804.png">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-b8e6d6540726714757f0abb484603ddb_r.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031553090.png">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-624efd0bb2f6b18ddfa640eee05bdf2c_r.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-f2c774e8b6c8fa8a727a58e0ab3ab34b_r.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031553114.png">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-8afa38804c79597f739f6bbee1dfc4d9_r.jpg">
+<meta property="article:published_time" content="2024-02-03T04:59:14.000Z">
+<meta property="article:modified_time" content="2024-02-03T08:03:19.283Z">
+<meta property="article:author" content="End0rph1n">
+<meta property="article:tag" content="computer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031303524.png">
+  
+  
+  
+  <title>computer_systems - End0rph1n&#39;s  blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"htwzxwj.github.io","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":15,"cursorChar":"_","loop":true,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Running up that hill</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/4.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="computer_systems"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-03 12:59" pubdate>
+          2024年2月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          25k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          205 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">computer_systems</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="CSAPP：一封献给所有CSE学子的情书"><a href="#CSAPP：一封献给所有CSE学子的情书" class="headerlink" title="CSAPP：一封献给所有CSE学子的情书"></a>CSAPP：一封献给所有CSE学子的情书</h1><blockquote>
+<p>本文是对<a target="_blank" rel="noopener" href="https://kkee.top/">Kcxain大佬</a>的拙劣模仿</p>
+</blockquote>
+<h2 id="第一章-概述"><a href="#第一章-概述" class="headerlink" title="第一章 概述"></a>第一章 概述</h2><h3 id="1-1-Hello简介"><a href="#1-1-Hello简介" class="headerlink" title="1.1 Hello简介"></a>1.1 Hello简介</h3><p>hello 程序的生命周期是从一个高级 C 语言程序开始的。为了在系统上运行 hello.c 程序，每条 C 语句都必须被其他程序转化为一系列的低级机器语言指令。这样的转化成为编译，最后得以作为进程在计算机系统中运行，也就是 P2P 过程。</p>
+<p>hello 的 P2P 过程是 gcc 调用 cpp(预处理器)&#x2F;cc1(编译器)&#x2F;as(汇编器)&#x2F;ld(连接器)，将 C 语言源文件预处理、编译、汇编、链接，最终生成可执行文件保存在磁盘中。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031303524.png" srcset="/img/loading.gif" lazyload alt="编译系统"></p>
+<p>hello 的 020 是 hello 可执行目标程序从运行到最后被回收的过程。在 Shell 中运行该程序时，Shell 调用 fork 函数创建子进程，创建完毕后，操作系统内核提供的 execve 函数会创建虚拟内存的映射，即 mmp，然后开始加载物理内存，进入到 main 函数当中执行相关的代码，打印出信息。在进程中，TLB、4级页表、3级 Cache，Pagefile等等设计会加快程序的运行。程序运行完成后，Shell 回收子进程，操作系统内核删除相关数据结构，释放其占据的资源。至此，hello 的一生就结束了。</p>
+<h3 id="1-2-环境与工具"><a href="#1-2-环境与工具" class="headerlink" title="1.2 环境与工具"></a>1.2 环境与工具</h3><h4 id="1-2-1-操作系统"><a href="#1-2-1-操作系统" class="headerlink" title="1.2.1 操作系统"></a>1.2.1 操作系统</h4><p>Windows 11 21H2、Windows Subsystem for Linux2(Ubuntu 18.04 LTS)</p>
+<h4 id="1-2-2-开发工具"><a href="#1-2-2-开发工具" class="headerlink" title="1.2.2 开发工具"></a>1.2.2 开发工具</h4><p>vscode、gcc、gdb</p>
+<h3 id="1-3中间结果"><a href="#1-3中间结果" class="headerlink" title="1.3中间结果"></a>1.3中间结果</h3><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hello.c</td>
+<td>源代码</td>
+</tr>
+<tr>
+<td>hello.i</td>
+<td>预处理后的代码</td>
+</tr>
+<tr>
+<td>hello.s</td>
+<td>汇编代码</td>
+</tr>
+<tr>
+<td>hello.o</td>
+<td>可重定位目标文件</td>
+</tr>
+<tr>
+<td>hello.o.elf.txt</td>
+<td>hello.o的ELF</td>
+</tr>
+<tr>
+<td>hello.o.s</td>
+<td>hello.o反汇编后的代码</td>
+</tr>
+<tr>
+<td>hello</td>
+<td>链接后的可执行目标文件</td>
+</tr>
+<tr>
+<td>hello.elf.txt</td>
+<td>hello的ELF</td>
+</tr>
+<tr>
+<td>obj_hello.s</td>
+<td>hello的反汇编代码</td>
+</tr>
+</tbody></table>
+<h3 id="1-4-本章小结"><a href="#1-4-本章小结" class="headerlink" title="1.4 本章小结"></a>1.4 本章小结</h3><p>本章介绍了hello的P2P和020过程，描述了使用的环境与工具，并列出了生成的中间结果文件以及它们的作用</p>
+<h2 id="第2章-预处理"><a href="#第2章-预处理" class="headerlink" title="第2章 预处理"></a>第2章 预处理</h2><h3 id="2-1-预处理的概念与作用"><a href="#2-1-预处理的概念与作用" class="headerlink" title="2.1 预处理的概念与作用"></a>2.1 预处理的概念与作用</h3><h4 id="2-1-1-What"><a href="#2-1-1-What" class="headerlink" title="2.1.1 What"></a>2.1.1 What</h4><p>对源文件进行一些文本方面的操作，比如文本替换、文件包含、删除部分代码等，</p>
+<h4 id="2-1-2-预处理的作用"><a href="#2-1-2-预处理的作用" class="headerlink" title="2.1.2 预处理的作用"></a>2.1.2 预处理的作用</h4><p>预处理根据以字符 # 开头的命令，修改原始的 C 程序。比如我们初学 C 语言时记忆最深刻的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>它就利用了预处理：引用头文件。它告诉预处理器读取系统头文件 stdio.h 的内容，预处理器把它插入程序文本中。</p>
+<h3 id="2-2-linux下的预处理"><a href="#2-2-linux下的预处理" class="headerlink" title="2.2 linux下的预处理"></a>2.2 linux下的预处理</h3><p>linux下使用gcc预处理的命令为：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">gcc –E hello.<span class="hljs-keyword">c</span> –o hello.i<br></code></pre></td></tr></table></figure>
+
+<p>-E 表示只激活预处理过程</p>
+<h3 id="2-3-Hello的与处理结果解析"><a href="#2-3-Hello的与处理结果解析" class="headerlink" title="2.3 Hello的与处理结果解析"></a>2.3 Hello的与处理结果解析</h3><h4 id="2-3-1-生成文件对比"><a href="#2-3-1-生成文件对比" class="headerlink" title="2.3.1 生成文件对比"></a>2.3.1 生成文件对比</h4><p>hello.c 源码</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031423661.png" srcset="/img/loading.gif" lazyload alt="hello.c"></p>
+<p>打开生成的 hello.i 文件，发现有 3060 行，并且我们原始的main代码部分被放在最后</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031424794.png" srcset="/img/loading.gif" lazyload alt="hello.i"></p>
+<h4 id="2-3-2-hello-i文件解析"><a href="#2-3-2-hello-i文件解析" class="headerlink" title="2.3.2 hello.i文件解析"></a>2.3.2 hello.i文件解析</h4><ol>
+<li>外部库文件</li>
+<li>首先。开始部分有一系列外部库.h文件路径</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs c"># <span class="hljs-number">1</span> <span class="hljs-string">&quot;hello.c&quot;</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;&lt;built-in&gt;&quot;</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;&lt;command-line&gt;&quot;</span><br># <span class="hljs-number">31</span> <span class="hljs-string">&quot;&lt;command-line&gt;&quot;</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/stdc-predef.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">32</span> <span class="hljs-string">&quot;&lt;command-line&gt;&quot;</span> <span class="hljs-number">2</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;hello.c&quot;</span><br><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">27</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/libc-header-start.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">33</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/libc-header-start.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/features.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">424</span> <span class="hljs-string">&quot;/usr/include/features.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/sys/cdefs.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">427</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/sys/cdefs.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/wordsize.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">428</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/sys/cdefs.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/long-double.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">429</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/sys/cdefs.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">425</span> <span class="hljs-string">&quot;/usr/include/features.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">448</span> <span class="hljs-string">&quot;/usr/include/features.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/gnu/stubs.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">10</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/gnu/stubs.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/gnu/stubs-64.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">11</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/gnu/stubs.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">449</span> <span class="hljs-string">&quot;/usr/include/features.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">34</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/libc-header-start.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">28</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br><br><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">216</span> <span class="hljs-string">&quot;/usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br><br># <span class="hljs-number">216</span> <span class="hljs-string">&quot;/usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-type">size_t</span>;<br># <span class="hljs-number">34</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/types.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">27</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/types.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/wordsize.h&quot;</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">28</span> <span class="hljs-string">&quot;/usr/include/x86_64-linux-gnu/bits/types.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>数据类型名称替换</li>
+</ol>
+<p>接下来是一堆 typedef，前面是我们编写代码时使用的标准数据类型，而后面的那些别名就是上述讲到的引入的头文件中使用的类型定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> __u_char;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> __u_short;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> __u_int;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> __u_long;<br><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">signed</span> <span class="hljs-type">char</span> <span class="hljs-type">__int8_t</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> <span class="hljs-type">__uint8_t</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">signed</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> <span class="hljs-type">__int16_t</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> <span class="hljs-type">__uint16_t</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">signed</span> <span class="hljs-type">int</span> <span class="hljs-type">__int32_t</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-type">__uint32_t</span>;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">signed</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> <span class="hljs-type">__int64_t</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> <span class="hljs-type">__uint64_t</span>;<br></code></pre></td></tr></table></figure>
+
+<p>打开一个头文件，其也有类似的行为</p>
+<ol start="3">
+<li>内部函数声明</li>
+</ol>
+<p>中间部分是很多内部函数的声明，包括系统内核提供的接口的封装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">vscanf</span> <span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __format, __gnuc_va_list __arg)</span><br>     __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__format__ (__scanf__, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)))</span> ;<br><br><br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">vsscanf</span> <span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __s,</span><br><span class="hljs-params">      <span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __format, __gnuc_va_list __arg)</span><br>     __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__nothrow__ , __leaf__))</span> __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__format__ (__scanf__, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)))</span>;<br># <span class="hljs-number">443</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">vfscanf</span> <span class="hljs-params">(FILE *__restrict __s, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __format, __gnuc_va_list __arg)</span> __<span class="hljs-title function_">asm__</span> <span class="hljs-params">(<span class="hljs-string">&quot;&quot;</span> <span class="hljs-string">&quot;__isoc99_vfscanf&quot;</span>)</span><br><br><br><br>     __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__format__ (__scanf__, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)))</span> ;<br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">vscanf</span> <span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __format, __gnuc_va_list __arg)</span> __<span class="hljs-title function_">asm__</span> <span class="hljs-params">(<span class="hljs-string">&quot;&quot;</span> <span class="hljs-string">&quot;__isoc99_vscanf&quot;</span>)</span><br><br>     __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__format__ (__scanf__, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)))</span> ;<br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">vsscanf</span> <span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __s, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *__restrict __format, __gnuc_va_list __arg)</span> __<span class="hljs-title function_">asm__</span> <span class="hljs-params">(<span class="hljs-string">&quot;&quot;</span> <span class="hljs-string">&quot;__isoc99_vsscanf&quot;</span>)</span> __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__nothrow__ , __leaf__))</span><br><br><br><br>     __<span class="hljs-title function_">attribute__</span> <span class="hljs-params">((__format__ (__scanf__, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)))</span>;<br># <span class="hljs-number">477</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fgetc</span> <span class="hljs-params">(FILE *__stream)</span>;<br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getc</span> <span class="hljs-params">(FILE *__stream)</span>;<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>主体代码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc,<span class="hljs-type">char</span> *argv[])</span>&#123;<br>    <span class="hljs-type">int</span> i;<br>    <span class="hljs-keyword">if</span>(argc!=<span class="hljs-number">4</span>)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;用法： Hello 学号 姓名 秒数！\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">8</span>;i++)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello %s %s \n&quot;</span>,argv[<span class="hljs-number">1</span>],argv[<span class="hljs-number">2</span>]);<br>        sleep(atoi(argv[<span class="hljs-number">3</span>]));<br>    &#125;<br>    getchar();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-4-本章小结"><a href="#2-4-本章小结" class="headerlink" title="2.4 本章小结"></a>2.4 本章小结</h3><p>本章介绍了 hello.c 的预处理过程，并分析了预处理的结果文件 hello.i。</p>
+<p>从程序员的角度来说，利用宏定义指令可以让我们轻松写出可读性更好的代码，利用条件编译指令可以让我们更加方便快捷的调试代码。</p>
+<p>从hello程序的角度来说，hello.c 是残缺的，不完整的，预处理阶段使它健全了四肢，得以最终运行在操作系统的上下文中。</p>
+<h2 id="第3章-编译"><a href="#第3章-编译" class="headerlink" title="第3章 编译"></a>第3章 编译</h2><h3 id="3-1-编译的概念与作用"><a href="#3-1-编译的概念与作用" class="headerlink" title="3.1 编译的概念与作用"></a>3.1 编译的概念与作用</h3><h4 id="3-1-1-什么是编译"><a href="#3-1-1-什么是编译" class="headerlink" title="3.1.1 什么是编译"></a>3.1.1 什么是编译</h4><p>汇编语言是对硬件的抽象，而 C 语言又是对汇编语言的抽象，C 语言对人友好，但对机器并不友好。编译阶段正是把完整的代码 hello.i 翻译成对应的汇编语言程序 hello.s</p>
+<h3 id="3-2-Ubuntu下编译的命令"><a href="#3-2-Ubuntu下编译的命令" class="headerlink" title="3.2 Ubuntu下编译的命令"></a>3.2 Ubuntu下编译的命令</h3><p>Linux下使用 gcc 编译的命令为：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">gcc -S hello<span class="hljs-selector-class">.i</span> -o hello<span class="hljs-selector-class">.s</span> <br></code></pre></td></tr></table></figure>
+
+<p>-S 表示只激活到编译过程</p>
+<h3 id="3-3-Hello的编译结果解析"><a href="#3-3-Hello的编译结果解析" class="headerlink" title="3.3 Hello的编译结果解析"></a>3.3 Hello的编译结果解析</h3><p>hello.i 编译生成了对应的汇编代码，在这一节中，我将对 C 语言中数据类型及各式操作如何编译到汇编代码中逐个解析</p>
+<h4 id="3-3-1-常量"><a href="#3-3-1-常量" class="headerlink" title="3.3.1 常量"></a>3.3.1 常量</h4><p>1.字符型常量</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span>(argc!=<span class="hljs-number">4</span>)&#123;<br>       <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;用法： Hello 学号 姓名 秒数！\n&quot;</span>);<br>       <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p>printf打印了一个字符串，这个字符串常量存在.LC0中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">.LC0:<br>	.string	&quot;\347\224\250\346\263\225\357\274\232 Hello \345\255\246\345\217\267 \345\247\223\345\220\215 \347\247\222\346\225\260\357\274\201&quot;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>其他常量</li>
+</ol>
+<p>还有一些其它常量直接在汇编代码中以立即数的身份出现，例如这段代码，有一个整型常量4</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-keyword">if</span>(argc!=<span class="hljs-number">4</span>)&#123;<br>       printf(<span class="hljs-string">&quot;用法： Hello 学号 姓名 秒数！\n&quot;</span>);<br>       <span class="hljs-keyword">exit</span>(<span class="hljs-number">1</span>);<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p>它对应的汇编代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">cmpl	$4, -20(%rbp)<br>je	.L2<br>leaq	.LC0(%rip), %rdi<br>call	puts@PLT<br></code></pre></td></tr></table></figure>
+
+<p>cmpl 比较 argc 与 4 是否相等，如果不相等，才把上述的字符串常量加载到寄存器</p>
+<h4 id="3-3-2-变量与运算"><a href="#3-3-2-变量与运算" class="headerlink" title="3.3.2 变量与运算"></a>3.3.2 变量与运算</h4><ol>
+<li>局部变量</li>
+</ol>
+<p>局部变量存储在寄存器或栈中。</p>
+<p>hello.c中有一个局部变量：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031439475.png" srcset="/img/loading.gif" lazyload alt="局部变量"></p>
+<p>i 是在一个 for 循环语句中作为循环变量，这段代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs assembly">.L3:<br>	cmpl	$7, -4(%rbp)<br>	jle	.L4<br>	call	getchar@PLT<br>	movl	$0, %eax<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，i 存储在栈中。</p>
+<ol start="2">
+<li>算数操作</li>
+</ol>
+<p>同时在上述的 for 循环中，局部变量 i 的值每次加1，这个运算就由 addl 指令来完成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">addl	$1, -4(%rbp)<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-3-3-数组-指针操作"><a href="#3-3-3-数组-指针操作" class="headerlink" title="3.3.3 数组&#x2F;指针操作"></a>3.3.3 数组&#x2F;指针操作</h4><p>main 函数的参数中，有一个字符串数组：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc,<span class="hljs-type">char</span> *argv[])</span>&#123;<br></code></pre></td></tr></table></figure>
+
+<p>其中，argc 是输入的参数的个数，也就是字符串数组 argv 中的元素个数。</p>
+<p>根据下面这行代码：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lisp">sleep(<span class="hljs-name">atoi</span>(<span class="hljs-name">argv</span>[<span class="hljs-number">3</span>]))<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>其对应汇编代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs assembly">movq	-32(%rbp), %rax<br>addq	$24, %rax<br>movq	(%rax), %rax<br>movq	%rax, %rdi<br>call	atoi@PLT<br>movl	%eax, %edi<br>call	sleep@PLT<br></code></pre></td></tr></table></figure>
+
+<p>%rdi 是第一个参数寄存器，也就是存储函数 atoi 调用的参数，所以栈中 %rbp-8 指向的栈空间存的内容就是 argv[3] 的地址</p>
+<p>同理，观察以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs assembly">.L4:<br>	movq	-32(%rbp), %rax<br>	addq	$16, %rax<br>	movq	(%rax), %rdx<br>	movq	-32(%rbp), %rax<br>	addq	$8, %rax<br>	movq	(%rax), %rax<br>	movq	%rax, %rsi<br>	leaq	.LC1(%rip), %rdi<br>	movl	$0, %eax<br>	call	printf@PLT<br></code></pre></td></tr></table></figure>
+
+<p>经过分析，分别找到 argv[1] 的地址存放在 %rbp-16 指向的栈空间中，argv[2] 的地址存放在 %rbp-24 存放的栈空间中。</p>
+<h4 id="3-3-4-控制转移"><a href="#3-3-4-控制转移" class="headerlink" title="3.3.4 控制转移"></a>3.3.4 控制转移</h4><p>同样还是以上述那段 for 循环的代码为例，循环变量 i 从 0 开始，每次循环都要加 1，并在循环开始判断 i&lt;8，对应的汇编代码就是用 cmpl 指令，判断 i 是否小于等于 7，如果是，则继续执行循环体中的内容，如果不是则跳出循环。</p>
+<h4 id="3-3-5-函数调用与返回"><a href="#3-3-5-函数调用与返回" class="headerlink" title="3.3.5 函数调用与返回"></a>3.3.5 函数调用与返回</h4><ol>
+<li>main函数</li>
+</ol>
+<p>传入参数为 argc，和 argv，为系统调用，且参数从 Shell 中传入，返回值设置为 0</p>
+<ol start="2">
+<li>printf函数</li>
+</ol>
+<p>通过设置寄存器 %rdi 和 %rsi 的值来传入参数并调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs assembly">.L4:<br>	movq	-32(%rbp), %rax<br>	addq	$16, %rax<br>	movq	(%rax), %rdx<br>	movq	-32(%rbp), %rax<br>	addq	$8, %rax<br>	movq	(%rax), %rax<br>	movq	%rax, %rsi<br>	leaq	.LC1(%rip), %rdi<br>	movl	$0, %eax<br>	call	printf@PLT<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>exit函数</li>
+</ol>
+<p>通过设置寄存器 %rdi 和 %rsi 的值来传入参数并调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">leaq	.LC0(%rip), %rdi<br>call	puts@PLT<br>movl	$1, %edi<br>call	exit@PLT<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>atoi函数</li>
+</ol>
+<p>将一个字符串的首地址赋给 %rdi 调用，函数返回这个字符串转成的整数值，存放在字符串 %eax</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs assembly">movq	-32(%rbp), %rax<br>addq	$24, %rax<br>movq	(%rax), %rax<br>movq	%rax, %rdi<br>call	atoi@PLT<br>movl	%eax, %edi<br>call	sleep@PLT<br>addl	$1, -4(%rbp)<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-4-本章小结"><a href="#3-4-本章小结" class="headerlink" title="3.4 本章小结"></a>3.4 本章小结</h3><p>本章介绍了从 hello.i 文件编译成 hello.s 文件的过程，以及原始的 .c 文件中各部分变量、常量、控制转移以及函数调用在汇编语言中是什么样子。</p>
+<p>接下来，只需要将 hello.s 稍加改造（汇编），就能让操作系统、让机器读懂它！</p>
+<h2 id="第4章-汇编"><a href="#第4章-汇编" class="headerlink" title="第4章 汇编"></a>第4章 汇编</h2><h3 id="4-1-汇编的概念与作用"><a href="#4-1-汇编的概念与作用" class="headerlink" title="4.1 汇编的概念与作用"></a>4.1 汇编的概念与作用</h3><p>所谓汇编，就是汇编器 (as) 将 hello.s 翻译成机器语言指令，把这些指令打包成可重定位目标程序的格式，并将结果保存在文件 hello.o 中，hello.o 是一个二进制文件。</p>
+<h3 id="4-2-Ubuntu下的汇编命令"><a href="#4-2-Ubuntu下的汇编命令" class="headerlink" title="4.2 Ubuntu下的汇编命令"></a>4.2 Ubuntu下的汇编命令</h3><p>Linux 下使用 gcc 汇编的命令为：</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-variable">gcc</span> <span class="hljs-operator">-</span><span class="hljs-built_in">C</span> <span class="hljs-variable">hello</span><span class="hljs-operator">.</span><span class="hljs-variable">s</span> <span class="hljs-operator">-</span><span class="hljs-variable">o</span> <span class="hljs-variable">hello</span><span class="hljs-operator">.</span><span class="hljs-variable">o</span><br></code></pre></td></tr></table></figure>
+
+<p>-C 表示只激活到汇编过程</p>
+<h3 id="4-3-可重定位目标elf格式"><a href="#4-3-可重定位目标elf格式" class="headerlink" title="4.3 可重定位目标elf格式"></a>4.3 可重定位目标elf格式</h3><p>hello.o 文件在 x86-64 Linux 和 Unix 系统中使用可执行可链接格式即 (ELF)，典型的 elf 可重定位目标文件格式如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031449974.png" srcset="/img/loading.gif" lazyload alt="elf格式"></p>
+<h4 id="4-3-1-ELF头"><a href="#4-3-1-ELF头" class="headerlink" title="4.3.1 ELF头"></a>4.3.1 ELF头</h4><p>使用 readelf -h hello.o 查看 ELF 头，如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">voidsolar</span>@admin:~/test$ readelf -h hello.o<br><span class="hljs-attribute">ELF</span> Header:<br>  <span class="hljs-attribute">Magic</span>:   <span class="hljs-number">7</span>f <span class="hljs-number">45</span> <span class="hljs-number">4</span>c <span class="hljs-number">46</span> <span class="hljs-number">02</span> <span class="hljs-number">01</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <br>  <span class="hljs-attribute">Class</span>:                             ELF64<br>  <span class="hljs-attribute">Data</span>:                              <span class="hljs-number">2</span>&#x27;s complement, little endian<br>  <span class="hljs-attribute">Version</span>:                           <span class="hljs-number">1</span> (current)<br>  <span class="hljs-attribute">OS</span>/ABI:                            UNIX - System V<br>  <span class="hljs-attribute">ABI</span> Version:                       <span class="hljs-number">0</span><br>  <span class="hljs-attribute">Type</span>:                              DYN (Shared object file)<br>  <span class="hljs-attribute">Machine</span>:                           Advanced Micro Devices X86-<span class="hljs-number">64</span><br>  <span class="hljs-attribute">Version</span>:                           <span class="hljs-number">0</span>x1<br>  <span class="hljs-attribute">Entry</span> point address:               <span class="hljs-number">0</span>x6a0<br>  <span class="hljs-attribute">Start</span> of program headers:          <span class="hljs-number">64</span> (bytes into file)<br>  <span class="hljs-attribute">Start</span> of section headers:          <span class="hljs-number">6664</span> (bytes into file)<br>  <span class="hljs-attribute">Flags</span>:                             <span class="hljs-number">0</span>x0<br>  <span class="hljs-attribute">Size</span> of this header:               <span class="hljs-number">64</span> (bytes)<br>  <span class="hljs-attribute">Size</span> of program headers:           <span class="hljs-number">56</span> (bytes)<br>  <span class="hljs-attribute">Number</span> of program headers:         <span class="hljs-number">9</span><br>  <span class="hljs-attribute">Size</span> of section headers:           <span class="hljs-number">64</span> (bytes)<br>  <span class="hljs-attribute">Number</span> of section headers:         <span class="hljs-number">29</span><br>  <span class="hljs-attribute">Section</span> header string table index: <span class="hljs-number">28</span><br></code></pre></td></tr></table></figure>
+
+<p>EFL 头以 16 字节的序列 Magic 开始，这个序列描述了生成该文件的系统的字的大小和字节顺序，ELF 头剩下的部分包含帮助链接器语法分析和解释目标文件的信息，其中包括 ELF 头的大小、目标文件的类型、机器类型、字节头部表（section header table）的文件偏移，以及节头部表中条目的大小和数量等信息。</p>
+<p>EFL头中还包括程序的入口点 (entry point)，也就是程序运行时要执行的第一条指令的地址为 0x6a0，可以查看hello.o 的反汇编代码，程序运行时的第一条指令的地址确实为 0x6a0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs assembly">00000000000006a0 &lt;_start&gt;:<br> 6a0:	31 ed                	xor    %ebp,%ebp<br> 6a2:	49 89 d1             	mov    %rdx,%r9<br> 6a5:	5e                   	pop    %rsi<br> 6a6:	48 89 e2             	mov    %rsp,%rdx<br> 6a9:	48 83 e4 f0          	and    $0xfffffffffffffff0,%rsp<br> 6ad:	50                   	push   %rax<br> 6ae:	54                   	push   %rsp<br> 6af:	4c 8d 05 fa 01 00 00 	lea    0x1fa(%rip),%r8        # 8b0 &lt;__libc_csu_fini&gt;<br> 6b6:	48 8d 0d 83 01 00 00 	lea    0x183(%rip),%rcx        # 840 &lt;__libc_csu_init&gt;<br> 6bd:	48 8d 3d e6 00 00 00 	lea    0xe6(%rip),%rdi        # 7aa &lt;main&gt;<br> 6c4:	ff 15 16 09 20 00    	callq  *0x200916(%rip)        # 200fe0 &lt;__libc_start_main@GLIBC_2.2.5&gt;<br> 6ca:	f4                   	hlt    <br> 6cb:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-3-2-节头部表"><a href="#4-3-2-节头部表" class="headerlink" title="4.3.2 节头部表"></a>4.3.2 节头部表</h4><p>使用 readelf -S hello.o 命令查看节头部表，如下：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs tap">There are<span class="hljs-number"> 29 </span>section headers, starting at offset 0x1a08:<br><br>Section Headers:<br>  [Nr] Name              Type             Address           Offset<br>       Size              EntSize          Flags  Link  Info  Align<br>  [ 0]                   NULL            <span class="hljs-number"> 0000000000000000 </span> 00000000<br>      <span class="hljs-number"> 0000000000000000 </span><span class="hljs-number"> 0000000000000000 </span>         <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    0<br>  [ 1] .interp           PROGBITS        <span class="hljs-number"> 0000000000000238 </span> 00000238<br>       000000000000001c <span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    1<br>  [ 2] .note.ABI-tag     NOTE            <span class="hljs-number"> 0000000000000254 </span> 00000254<br>      <span class="hljs-number"> 0000000000000020 </span><span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    4<br>  [ 3] .note.gnu.build-i NOTE            <span class="hljs-number"> 0000000000000274 </span> 00000274<br>      <span class="hljs-number"> 0000000000000024 </span><span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    4<br>  [ 4] .gnu.hash         GNU_HASH        <span class="hljs-number"> 0000000000000298 </span> 00000298<br>       000000000000001c <span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 5 </span>   <span class="hljs-number"> 0 </span>    8<br>  [ 5] .dynsym           DYNSYM           00000000000002b8  000002b8<br>      <span class="hljs-number"> 0000000000000120 </span><span class="hljs-number"> 0000000000000018 </span>  A      <span class="hljs-number"> 6 </span>   <span class="hljs-number"> 1 </span>    8<br>  [ 6] .dynstr           STRTAB           00000000000003d8  000003d8<br>       00000000000000a1 <span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    1<br>  [ 7] .gnu.version      VERSYM           000000000000047a  0000047a<br>      <span class="hljs-number"> 0000000000000018 </span><span class="hljs-number"> 0000000000000002 </span>  A      <span class="hljs-number"> 5 </span>   <span class="hljs-number"> 0 </span>    2<br>  [ 8] .gnu.version_r    VERNEED         <span class="hljs-number"> 0000000000000498 </span> 00000498<br>      <span class="hljs-number"> 0000000000000020 </span><span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 6 </span>   <span class="hljs-number"> 1 </span>    8<br>  [ 9] .rela.dyn         RELA             00000000000004b8  000004b8<br>       00000000000000c0 <span class="hljs-number"> 0000000000000018 </span>  A      <span class="hljs-number"> 5 </span>   <span class="hljs-number"> 0 </span>    8<br>  [10] .rela.plt         RELA            <span class="hljs-number"> 0000000000000578 </span> 00000578<br>      <span class="hljs-number"> 0000000000000090 </span><span class="hljs-number"> 0000000000000018 </span> AI      <span class="hljs-number"> 5 </span>  <span class="hljs-number"> 22 </span>    8<br>  [11] .init             PROGBITS        <span class="hljs-number"> 0000000000000608 </span> 00000608<br>      <span class="hljs-number"> 0000000000000017 </span><span class="hljs-number"> 0000000000000000 </span> AX      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    4<br>  [12] .plt              PROGBITS        <span class="hljs-number"> 0000000000000620 </span> 00000620<br>      <span class="hljs-number"> 0000000000000070 </span><span class="hljs-number"> 0000000000000010 </span> AX      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    16<br>  [13] .plt.got          PROGBITS        <span class="hljs-number"> 0000000000000690 </span> 00000690<br>      <span class="hljs-number"> 0000000000000008 </span><span class="hljs-number"> 0000000000000008 </span> AX      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [14] .text             PROGBITS         00000000000006a0  000006a0<br>      <span class="hljs-number"> 0000000000000212 </span><span class="hljs-number"> 0000000000000000 </span> AX      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    16<br>  [15] .fini             PROGBITS         00000000000008b4  000008b4<br>      <span class="hljs-number"> 0000000000000009 </span><span class="hljs-number"> 0000000000000000 </span> AX      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    4<br>  [16] .rodata           PROGBITS         00000000000008c0  000008c0<br>       000000000000003e <span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [17] .eh_frame_hdr     PROGBITS        <span class="hljs-number"> 0000000000000900 </span> 00000900<br>       000000000000003c <span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    4<br>  [18] .eh_frame         PROGBITS        <span class="hljs-number"> 0000000000000940 </span> 00000940<br>      <span class="hljs-number"> 0000000000000108 </span><span class="hljs-number"> 0000000000000000 </span>  A      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [19] .init_array       INIT_ARRAY       0000000000200d90  00000d90<br>      <span class="hljs-number"> 0000000000000008 </span><span class="hljs-number"> 0000000000000008 </span> WA      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [20] .fini_array       FINI_ARRAY       0000000000200d98  00000d98<br>      <span class="hljs-number"> 0000000000000008 </span><span class="hljs-number"> 0000000000000008 </span> WA      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [21] .dynamic          DYNAMIC          0000000000200da0  00000da0<br>       00000000000001f0 <span class="hljs-number"> 0000000000000010 </span> WA      <span class="hljs-number"> 6 </span>   <span class="hljs-number"> 0 </span>    8<br>  [22] .got              PROGBITS         0000000000200f90  00000f90<br>      <span class="hljs-number"> 0000000000000070 </span><span class="hljs-number"> 0000000000000008 </span> WA      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [23] .data             PROGBITS        <span class="hljs-number"> 0000000000201000 </span> 00001000<br>      <span class="hljs-number"> 0000000000000010 </span><span class="hljs-number"> 0000000000000000 </span> WA      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    8<br>  [24] .bss              NOBITS          <span class="hljs-number"> 0000000000201010 </span> 00001010<br>      <span class="hljs-number"> 0000000000000008 </span><span class="hljs-number"> 0000000000000000 </span> WA      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    1<br>  [25] .comment          PROGBITS        <span class="hljs-number"> 0000000000000000 </span> 00001010<br>      <span class="hljs-number"> 0000000000000029 </span><span class="hljs-number"> 0000000000000001 </span> MS      <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    1<br>  [26] .symtab           SYMTAB          <span class="hljs-number"> 0000000000000000 </span> 00001040<br>      <span class="hljs-number"> 0000000000000660 </span><span class="hljs-number"> 0000000000000018 </span>        <span class="hljs-number"> 27 </span>  <span class="hljs-number"> 43 </span>    8<br>  [27] .strtab           STRTAB          <span class="hljs-number"> 0000000000000000 </span> 000016a0<br>      <span class="hljs-number"> 0000000000000263 </span><span class="hljs-number"> 0000000000000000 </span>         <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    1<br>  [28] .shstrtab         STRTAB          <span class="hljs-number"> 0000000000000000 </span> 00001903<br>       00000000000000fe <span class="hljs-number"> 0000000000000000 </span>         <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>    1<br><br></code></pre></td></tr></table></figure>
+
+<p>节头部表描述了 hello.o 中文件中各个节的语义，包括节的类型、位置和大小等信息。由于这是可重定位目标文件，所以每个节的地址都从 0 开始。</p>
+<p>它还利用 Flags 描述各个节的读写权限：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs gcode">Key to Flags:<br>  W <span class="hljs-comment">(write)</span>, A <span class="hljs-comment">(alloc)</span>, X <span class="hljs-comment">(execute)</span>, M <span class="hljs-comment">(merge)</span>, S <span class="hljs-comment">(strings)</span>, I <span class="hljs-comment">(info)</span>,<br>  L <span class="hljs-comment">(link order)</span>, O <span class="hljs-comment">(extra OS processing required)</span>, G <span class="hljs-comment">(group)</span>, T <span class="hljs-comment">(TLS)</span>,<br>  C <span class="hljs-comment">(compressed)</span>, x <span class="hljs-comment">(unknown)</span>, o <span class="hljs-comment">(OS specific)</span>, E <span class="hljs-comment">(exclude)</span>,<br>  l <span class="hljs-comment">(large)</span>, p <span class="hljs-comment">(processor specific)</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-3-3-符号表"><a href="#4-3-3-符号表" class="headerlink" title="4.3.3 符号表"></a>4.3.3 符号表</h4><p>使用  命令查看 .symtab 节中的 ELF 符号表</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Symbol</span> table &#x27;.dynsym&#x27; contains <span class="hljs-number">12</span> entries:<br>   <span class="hljs-attribute">Num</span>:    Value          Size Type    Bind   Vis      Ndx Name<br>     <span class="hljs-attribute">0</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> NOTYPE  LOCAL  DEFAULT  UND <br>     <span class="hljs-attribute">1</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> NOTYPE  WEAK   DEFAULT  UND _ITM_deregisterTMCloneTab<br>     <span class="hljs-attribute">2</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND puts@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>     <span class="hljs-attribute">3</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND printf@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>     <span class="hljs-attribute">4</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND __libc_start_main@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>     <span class="hljs-attribute">5</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND getchar@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>     <span class="hljs-attribute">6</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> NOTYPE  WEAK   DEFAULT  UND __gmon_start__<br>     <span class="hljs-attribute">7</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND atoi@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>     <span class="hljs-attribute">8</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND exit@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>     <span class="hljs-attribute">9</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> NOTYPE  WEAK   DEFAULT  UND _ITM_registerTMCloneTable<br>    <span class="hljs-attribute">10</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    GLOBAL DEFAULT  UND sleep@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br>    <span class="hljs-attribute">11</span>: <span class="hljs-number">0000000000000000</span>     <span class="hljs-number">0</span> FUNC    WEAK   DEFAULT  UND __cxa_finalize@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> (<span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
+
+<p>它存放在程序中定义和引用的函数和全局变量的信息。</p>
+<p>如图，前面谈到的 main 函数、atoi 函数、exit 函数、sleep 函数的信息：</p>
+<h4 id="4-3-4-重定位条目"><a href="#4-3-4-重定位条目" class="headerlink" title="4.3.4 重定位条目"></a>4.3.4 重定位条目</h4><p>使用 readelf -r hello.o 命令查看 hello.o 的重定位条目：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Relocation</span> section &#x27;.rela.dyn&#x27; at offset <span class="hljs-number">0</span>x4b8 contains <span class="hljs-number">8</span> entries:<br>  <span class="hljs-attribute">Offset</span>          Info           Type           Sym. Value    Sym. Name + Addend<br><span class="hljs-attribute">000000200d90</span>  <span class="hljs-number">000000000008</span> R_X86_64_RELATIVE                    <span class="hljs-number">7</span>a0<br><span class="hljs-attribute">000000200d98</span>  <span class="hljs-number">000000000008</span> R_X86_64_RELATIVE                    <span class="hljs-number">760</span><br><span class="hljs-attribute">000000201008</span>  <span class="hljs-number">000000000008</span> R_X86_64_RELATIVE                    <span class="hljs-number">201008</span><br><span class="hljs-attribute">000000200fd8</span>  <span class="hljs-number">000100000006</span> R_X86_64_GLOB_DAT <span class="hljs-number">0000000000000000</span> _ITM_deregisterTMClone + <span class="hljs-number">0</span><br><span class="hljs-attribute">000000200fe0</span>  <span class="hljs-number">000400000006</span> R_X86_64_GLOB_DAT <span class="hljs-number">0000000000000000</span> __libc_start_main@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> + <span class="hljs-number">0</span><br><span class="hljs-attribute">000000200fe8</span>  <span class="hljs-number">000600000006</span> R_X86_64_GLOB_DAT <span class="hljs-number">0000000000000000</span> __gmon_start__ + <span class="hljs-number">0</span><br><span class="hljs-attribute">000000200ff0</span>  <span class="hljs-number">000900000006</span> R_X86_64_GLOB_DAT <span class="hljs-number">0000000000000000</span> _ITM_registerTMCloneTa + <span class="hljs-number">0</span><br><span class="hljs-attribute">000000200ff8</span>  <span class="hljs-number">000</span>b00000006 R_X86_64_GLOB_DAT <span class="hljs-number">0000000000000000</span> __cxa_finalize@GLIBC_2.<span class="hljs-number">2</span>.<span class="hljs-number">5</span> + <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>当汇编器生成 hello.o 后，它并不知道数据和代码最终将放在内存中的什么位置。它也不知道这个模块引用的任何外部定义的函数或者全局变量的位置。所以，无论何时汇编器遇到对最终位置未知的目标引用，它就会生成一个重定位条目，告诉链接器在将目标文件合并成可执行文件时如何修改这个引用。代码重定位条目放在 .rela.plt 中，已初始化数据的重定位条目放在 .rela.dyn中。</p>
+<h4 id="4-4-Hello-o结果解析"><a href="#4-4-Hello-o结果解析" class="headerlink" title="4.4 Hello.o结果解析"></a>4.4 Hello.o结果解析</h4><p>使用 objdump -d -r hello.o 命令反汇编 hello.o，查看反汇编后的汇编代码与 hello.s 有何不同：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031503550.png" srcset="/img/loading.gif" lazyload alt="反汇编结果"></p>
+<p><strong>不同点：</strong></p>
+<p>分支跳转：在 hello.s 中，分支跳转的目标位置是通过 .L1、.L2 这样的助记符来实现的，而 hello.o中，跳转的目标位置是指令的地址。</p>
+<p>函数调用：在 hello.s 中，call 后面的目标函数是它的函数名，而在 hello.o 中，call 的是目标函数的相对偏移地址。</p>
+<h3 id="4-5-本章小结"><a href="#4-5-本章小结" class="headerlink" title="4.5 本章小结"></a>4.5 本章小结</h3><p>本章分析了汇编的过程，并分析了 ELF 头、节头部表、重定位节以及符号表。比较了 hello.s 和 hello.o 反汇编之后的代码的不同。</p>
+<h2 id="第5章-链接"><a href="#第5章-链接" class="headerlink" title="第5章 链接"></a>第5章 链接</h2><h3 id="5-1-链接的概念与作用"><a href="#5-1-链接的概念与作用" class="headerlink" title="5.1 链接的概念与作用"></a>5.1 链接的概念与作用</h3><p>链接是将各种代码和数据片段收集并组合成为一个单一文件的过程，这个文件可被加载到内存并执行。</p>
+<p>链接器在软件开发中扮演着一个关键的角色，因为它使得分离编译成为可能。我们不用将一个大型应用程序组织为一个巨大的源文件，而是可以把它分解为更小、更好管理的模块，可以独立地修改和编译这些模块。当我们改变这些模块中地一个时，只需简单地重新编译它，并重新链接应用，而不必重新编译其他文件。即使对hello这样一个非常简单的小程序，链接的作用也是巨大的。</p>
+<h3 id="5-2-在Ubuntu下链接的命令"><a href="#5-2-在Ubuntu下链接的命令" class="headerlink" title="5.2 在Ubuntu下链接的命令"></a>5.2 在Ubuntu下链接的命令</h3><p>Linux下使用链接器 (ld) 链接的命令为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">ld -o hello -dynamic-linker /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o hello.o /usr/lib/x86_64-linux-gnu/libc.so /usr/lib/x86_64-linux-gnu/crtn.o<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3-可执行目标文件hello的格式"><a href="#5-3-可执行目标文件hello的格式" class="headerlink" title="5.3 可执行目标文件hello的格式"></a>5.3 可执行目标文件hello的格式</h3><h3 id="5-3-1-ELF头"><a href="#5-3-1-ELF头" class="headerlink" title="5.3.1 ELF头"></a>5.3.1 ELF头</h3><p>查看hello的ELF头</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031529252.png" srcset="/img/loading.gif" lazyload alt="hello"></p>
+<p>可以看到，程序的 Type 变成了 EXEC (Executable file)，程序入口也分配了地址，为 0x4010f0</p>
+<h3 id="5-3-2-节头部表"><a href="#5-3-2-节头部表" class="headerlink" title="5.3.2 节头部表"></a>5.3.2 节头部表</h3><p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031530618.png" srcset="/img/loading.gif" lazyload alt="节头部表"></p>
+<p>各个节的地址也从 0 开始进行了分配。可以看到 .text 节的起始地址为 0x4010f0，这刚好就是前面 ELF 头中的程序入口地址，与 .text 中存放程序的机器代码符合。</p>
+<h3 id="5-4-hello的虚拟地址空间"><a href="#5-4-hello的虚拟地址空间" class="headerlink" title="5.4 hello的虚拟地址空间"></a>5.4 hello的虚拟地址空间</h3><p>使用 edb 打开 hello，可以看到 hello 的虚拟地址起始为 0x401000</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031531957.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="5-5-链接的重定位过程分析"><a href="#5-5-链接的重定位过程分析" class="headerlink" title="5.5 链接的重定位过程分析"></a>5.5 链接的重定位过程分析</h3><p>使用 objdump -d -r hello 命令反汇编代码，查看两者之间的不同</p>
+<h4 id="5-5-1-新增函数"><a href="#5-5-1-新增函数" class="headerlink" title="5.5.1 新增函数"></a>5.5.1 新增函数</h4><p>如图，链接后，加入了很多需要用到的库函数，puts, pintf, getchar, atoi, exit, sleep 等</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031531856.png" srcset="/img/loading.gif" lazyload alt="新增函数"></p>
+<h4 id="5-5-2-新增节"><a href="#5-5-2-新增节" class="headerlink" title="5.5.2 新增节"></a>5.5.2 新增节</h4><p>如图，新增了 .init 节和 .plt 节</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031532465.png" srcset="/img/loading.gif" lazyload alt="新增节"></p>
+<h4 id="5-5-3-新增代码endbr64"><a href="#5-5-3-新增代码endbr64" class="headerlink" title="5.5.3 新增代码endbr64"></a>5.5.3 新增代码endbr64</h4><p>可以观察到，由 hello 反汇编生成的代码中有一句出现的频率非常高，那就是 endbr64，几乎在每一个函数或者代码片段的开头都是这句代码，非常有意思。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031533458.png" srcset="/img/loading.gif" lazyload alt="endbr64"></p>
+<p>其实这是 Intel 的 CET 技术，这个机制主要是用来对抗 ROP 攻击。我们在第 3 章学到，黑客可以利用缓冲区溢出来进行攻击，使程序执行黑客想要执行的程序，增加系统风险。而 CPU 和操作系统也采用了相应措施来避免这个风险：</p>
+<ul>
+<li>栈随机化。这段程序分配的栈的位置在每次运行时都是随机的，这就使我们无法确定在哪里插入代码</li>
+<li>限制可执行代码区域。它限制栈上存放的代码是不可执行的。</li>
+</ul>
+<p>但是这些措施却无法阻挡 ROP 攻击。什么是 ROP 攻击呢？ROP：面向返回的程序设计，所谓 ROP 攻击就是黑客在已经存在的程序中找到特定的以 ret 结尾的指令序列为我们所用，称这样的代码段为 gadget，把要用到部分的地址压入栈中，每次 ret 后又会取出一个新的 gadget，于是这样就能形成一个程序链，从而实现黑客的目的。我喜欢将这种攻击方式称作“就地取材，拼凑代码”，如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031534763.png" srcset="/img/loading.gif" lazyload alt="ROP"></p>
+<p>对于 ROP 攻击也能找到解决办法，就是每次在跳转后，检查这段代码是不是程序想要的代码，也就是 CET 技术。CET 通过编译器在合理的间接跳转 (call&#x2F;jmp) 中用新的指令做标记，新指令包含 endbr32 和 endbr64。程序每次执行跳转时，CPU 都会判断下一条指令是不是 endbr32&#x2F;endbr64 指令，如果是则正常执行，如果不是，则会触发 #CP 异常。</p>
+<p>这也就是每个代码段和函数开头都有一句 endbr64的原因了。</p>
+<p>关于 ROP，在 Attack Lab 中有更深入的讲解，并进行了攻击实践。</p>
+<h4 id="5-5-4-函数调用与跳转"><a href="#5-5-4-函数调用与跳转" class="headerlink" title="5.5.4 函数调用与跳转"></a>5.5.4 函数调用与跳转</h4><p>由于hello文件已经是重定位后的可执行目标文件，所以每一个 call&#x2F;jmp 语句的目标地址就是确切的虚拟地址。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031535254.png" srcset="/img/loading.gif" lazyload alt="调用"></p>
+<h3 id="5-6-hello的执行过程"><a href="#5-6-hello的执行过程" class="headerlink" title="5.6 hello的执行过程"></a>5.6 hello的执行过程</h3><p>当在 Shell 中运行 hello 时，Shell 会调用驻留在存储器中的加载器来运行它。当加载器运行时，它创建如图的内存映像：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031535437.png" srcset="/img/loading.gif" lazyload alt="内存映像"></p>
+<p>在 ELF 头部表的引导下，加载器将可执行文件的片复制到代码段和数据段。接下来加载器跳转到程序的入口点，也就是 _start 函数的地址。这个函数是在系统目标文件 ctrl.o 中定义的。_start 函数调用系统启动函数 __libc_start_main，该函数定义在 <a target="_blank" rel="noopener" href="http://libc.so/">libc.so</a> 中。它初始化执行环境，调用用户层的 main 函数，处理 main 函数的返回值，并且在需要的时候把控制返回给内核。</p>
+<p>下面我使用 gdb 进行调试，逐步查看程序的执行过程：</p>
+<p>函数入口为 0x4010f0，所以执行 hello 后，程序先从 _start 开始执行，所以我将断点打在 _start 处：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031536189.png" srcset="/img/loading.gif" lazyload alt="断点1"></p>
+<p>接下来单步调试运行：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031536803.png" srcset="/img/loading.gif" lazyload alt="调试"></p>
+<p>接下来会调用 main 函数，程序并不是直接调用 main 函数，而是先来到 __libc_start_main，用来向 main 函数传递参数，如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031536246.png" srcset="/img/loading.gif" lazyload alt=" __libc_start_main"></p>
+<p>接下来，分别跳转至 GI_cxa_atexit，lll_cas_lock，new_exitfn</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031537137.png" srcset="/img/loading.gif" lazyload alt="分别跳转"></p>
+<p>结束后，又回到了 __libc_start_main，随后来到 __libc_csu_init 部分，这部分代码在 hello 反汇编生成的汇编代码中也能看到。</p>
+<p>随后，来到 init，再返回 __libc_csu_init，然后再返回 __libc_start_main，然后来到 _setjmp 和 __sigsetjmp 以及 __sigjmp_save，最后又返回 __libc_start_main</p>
+<p>然后才来到 main，根据输入的不同，main 可能会调用 puts，printf，getchar，atoi，exit，sleep 函数</p>
+<p>然后调用 __GI__IO_puts，__strlen_avx2，回到 __GI__IO_puts</p>
+<p>然后调用 __lll_cas_lock，然后又回到 __GI__IO_puts，然后调用 IO_validate_vtable，又回到 __GI__IO_puts，然后调用 _IO_new_file_xsputn，然后调用 IO_validate_vtable</p>
+<p>又回到 _IO_new_file_xsputn，又调用 _IO_new_file_overflow，再调用 __GI__IO_doallocbuf，再调用 IO_validate_vtable，又调用 __GI__IO_doallocbuf，再调用 __GI__IO_file_doallocate，调用 __GI__IO_file_stat，__GI___fxstat</p>
+<p>回到 __GI__IO_file_doallocate，调用 malloc@plt，调用 __GI___libc_malloc，再调用 malloc_hook_ini，又调用 _dl_find_dso_for_object 随后调用 __GI__dl_addr</p>
+<p>然后回到 _IO_new_file_overflow 又回到 _IO_new_file_xsputn</p>
+<p>然后又回到 __GI__IO_puts，回到 main</p>
+<p>最后调用 exit，调用 __GI_exit 再调用 __run_exit_handlers，__GI___call_tls_dtors</p>
+<p>回到 __run_exit_handlers，调用 __GI___call_tls_dtors，再回到 __run_exit_handlers，然后调用 _IO_cleanup，再调用 _IO_flush_all_lockp</p>
+<p>回到 __run_exit_handlers，调用 __GI__exit，再回到 main</p>
+<p>调用关系如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031538968.png" srcset="/img/loading.gif" lazyload alt="调用关系"></p>
+<h3 id="5-7-Hello的动态链接分析"><a href="#5-7-Hello的动态链接分析" class="headerlink" title="5.7 Hello的动态链接分析"></a>5.7 Hello的动态链接分析</h3><p>在进行动态链接前，首先进行静态链接，生成部分链接的可执行目标文件 hello。此时共享库中的代码和数据没有被合并到 hello 中。只有在加载 hello 时，动态链接器才对共享目标文件中的相应模块内的代码和数据进行重定位，加载共享库，生成完全链接的可执行目标文件。</p>
+<p>比如查看 _GLOBAL_OFFSET_TABLE 的内容：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031538341.png" srcset="/img/loading.gif" lazyload alt="GLOBAL_OFFSET_TABLE"></p>
+<h3 id="5-8-本章小结"><a href="#5-8-本章小结" class="headerlink" title="5.8 本章小结"></a>5.8 本章小结</h3><p>本章详细介绍了 hello 的链接过程，比对链接后的 hello 与 hello.o 的不同，并拓展讲解了 endbr64 的作用，最后使用 gdb 工具逐行查看 hello 的运行过程。</p>
+<p>至此，我们的 hello 就成为了一个具有完整躯体与精神的青年了，也是时候让他进入社会，成为操作系统中运行的进程！</p>
+<h2 id="第6章-hello进程管理"><a href="#第6章-hello进程管理" class="headerlink" title="第6章 hello进程管理"></a>第6章 hello进程管理</h2><h3 id="6-1-进程的概念与作用"><a href="#6-1-进程的概念与作用" class="headerlink" title="6.1 进程的概念与作用"></a>6.1 进程的概念与作用</h3><h4 id="6-1-1-进程的概念"><a href="#6-1-1-进程的概念" class="headerlink" title="6.1.1 进程的概念"></a>6.1.1 进程的概念</h4><p>进程(process)，是操作系统对一个正在运行的程序的一种抽象。进程是程序的基本执行实体；在面向线程设计的系统（如当代多数操作系统、Linux 2.6及更新的版本）中，进程本身不是基本执行单位，而是线程的容器。程序本身只是指令、数据及其组织形式的描述，相当于一个名词，进程才是程序（那些指令和数据）的真正执行实例，</p>
+<h4 id="6-1-2-进程的作用"><a href="#6-1-2-进程的作用" class="headerlink" title="6.1.2 进程的作用"></a>6.1.2 进程的作用</h4><p>hello 在运行时，操作系统会提供一种假象，就好像系统上只有这个程序在运行。程序看上去是独占地使用处理器、主存和 I&#x2F;O 设备。处理器看上去就像在不间断地一条接一条地执行程序中的指令，即该程序的代码和数据是系统内存中唯一的对象。这些假象就是通过进程来实现的。</p>
+<h3 id="6-2-简述Shell-bash-的作用与处理流程"><a href="#6-2-简述Shell-bash-的作用与处理流程" class="headerlink" title="6.2 简述Shell-bash 的作用与处理流程"></a>6.2 简述Shell-bash 的作用与处理流程</h3><p>Shell 是一种交互型的应用级程序，用户能够通过 Shell 与操作系统内核进行交互，如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031543144.png" srcset="/img/loading.gif" lazyload alt="shell"></p>
+<p>Shell 处理流程：</p>
+<ol>
+<li>在 Shell 中输入 hello 程序的路径</li>
+<li>Shell 判断用户输入的是否为内置命令，如果不是，就认为它是一个可执行目标文件</li>
+<li>Shell 构造 argv 和 envp</li>
+<li>Shell 使用 fork() 创建子进程，调用 execve() 函数在新创建的子基础南横的上下文中加载并运行 hello 程序。将 hello 中的 .text 节、.data 节、.bss 节等内容加载到当前进程的虚拟地址空间</li>
+<li>execve() 函数调用加载器，跳转到程序的入口点，开始执行 _start 函数，我们的 hello 程序便正式开始执行了</li>
+</ol>
+<h3 id="6-3-Hellode-fork进程创建过程"><a href="#6-3-Hellode-fork进程创建过程" class="headerlink" title="6.3 Hellode fork进程创建过程"></a>6.3 Hellode fork进程创建过程</h3><p>Linux 通过 clone() 系统调用来实现 fork()，由于 clone() 可以自主选择需要复制的资源，所以这个系统调用需要传入很多的参数标志用于指明父子进程需要共享的资源。fork()，vfork()，__clone() 函数都需要根据各自传入的参数去底层调用 clone() 系统调用，然后再由 clone() 去调用 do_fork()。do_fork() 完成了创建的大部分工作，该函数调用 copy_process() 函数,然后让进程开始运行。</p>
+<p>copy_process() 函数是核心，他的工作分为这几步：</p>
+<ol>
+<li>调用 dup_task_struct() 为新进程创建一个内核栈，thread_info 结构和 task_struct，这些值和当前进程的值相同。也就是说，当前子进程和父进程的进程描述符是一致的。</li>
+<li>检查一次，确保创建新进程后，拥有的进程数目没有超过给它分配的资源和限制。所有进程的 task_struct 结构中都有一个数组 rlim，这个数组中记载了该进程对占用各种资源的数目限制，所以如果该用户当前拥有的进程数目已经达到了峰值，则不允许继续 fork()。这个值为 PID_MAX，大小为 0x8000，也就是说进程号的最大值为 0x7fff，即短整型变量 short 的大小 32767，其中 0~299 是为系统进程（包括内核线程）保留的，主要用于各种“保护神进程”。</li>
+<li>子进程为了将自己与父进程区分开来，将进程描述符中的许多成员全部清零或者设为初始值。不过大多数数据都未修改。</li>
+<li>将子进程的状态设置为 TASK_UNINTERRUPTIBLE 深度睡眠，不可被信号唤醒，以保证子进程不会投入运行。</li>
+<li>copy_process() 函数调用 copy_flags() 以更新 task_struct 中的 flags 成员。其中表示进程是否拥有超级用户管理权限的 PF_SUPERPRIV 标志被清零，表示进程还没有调用 exec() 函数的 PF_FORKNOEXEC 标志也被清零。</li>
+<li>调用 alloc_pid 为子进程分配一个有效的 PID</li>
+<li>根据传递给 clone() 的参数标志，调用 do_fork()-&gt;copy_process() 拷贝或共享父进程打开的文件，信号处理函数，进程地址空间和命名空间等。一般情况下，这些资源会给进程下的所有线程共享。</li>
+<li>最后，copy_process() 做扫尾工作并返回一个指向子进程的指针。</li>
+</ol>
+<h3 id="6-4-Hello的execve过程"><a href="#6-4-Hello的execve过程" class="headerlink" title="6.4 Hello的execve过程"></a>6.4 Hello的execve过程</h3><p>execve() 函数加载并运行可执行目标文件，且带参数列表 argv 和环境变量列表 envp，execve() 函数调用一次从不返回。它的执行过程如下：</p>
+<ol>
+<li>删除已存在的用户区域</li>
+<li>映射私有区：为 hello 的代码、数据、.bss 和栈区域创建新的区域结构，所有这些区域都是私有的、写时才复制的</li>
+<li>映射共享区：比如 hello 程序与共享库 <a target="_blank" rel="noopener" href="http://libc.so/">libc.so</a> 链接</li>
+<li>设置 PC：exceve() 做的最后一件事就是设置当前进程的上下文中的程序计数器，使之指向代码区域的入口点</li>
+<li>execve() 在调用成功的情况下不会返回，只有当出现错误时，例如找不到需要执行的程序时，execve() 才会返回到调用程序</li>
+</ol>
+<h3 id="6-5-Hello的进程执行"><a href="#6-5-Hello的进程执行" class="headerlink" title="6.5 Hello的进程执行"></a>6.5 Hello的进程执行</h3><h4 id="6-5-1-逻辑控制流"><a href="#6-5-1-逻辑控制流" class="headerlink" title="6.5.1 逻辑控制流"></a>6.5.1 逻辑控制流</h4><p>操作系统将一个 CPU 物理控制流，分成多个逻辑控制流，每个进程独占一个逻辑控制流。当一个逻辑控制流执行的时候，其他的逻辑控制流可能会临时暂停执行。一般来说，每个逻辑控制流都是独立的。当两个逻辑控制流在时间上发生重叠，我们说是并行的。如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031545870.png" srcset="/img/loading.gif" lazyload alt="逻辑控制流"></p>
+<p>处理器在多个进程中来回切换称为多任务，每个时间当处理器执行一段控制流称为时间片。因此多任务也指时间分片。</p>
+<h4 id="6-5-2-用户模式和内核模式"><a href="#6-5-2-用户模式和内核模式" class="headerlink" title="6.5.2 用户模式和内核模式"></a>6.5.2 用户模式和内核模式</h4><p>为了限制一个应用可以执行的指令以及它可以访问的地址空间范围，处理器用一个控制寄存器中的一个模式位来描述进程当前的特权。如图是 x86 CPU 提供的环保护机制：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031545878.webp" srcset="/img/loading.gif" lazyload alt="环保护机制"></p>
+<p>内核工作在 0 环，用户工作在 3 环，中间环留给中间软件用。Linux 仅用第 0 和第 3 环，即用户模式和内核模式。</p>
+<p><strong>用户模式：</strong>用户模式中的进程不允许执行特权指令，比如停止处理器、改变模式位，或者发起一个 I&#x2F;O 操作。也不允许用户模式的进程直接引用地址空间中内核区内的代码和数据。用户程序必须通过系统调用接口间接地访问内核代码和数据。</p>
+<p>进程从用户模式变为内核模式的唯一方法是通过诸如中断、故障或者陷入系统调用这样的异常。当异常发生时，控制传递到异常处理程序，处理器将模式从用户模式变为内核模式。处理程序运行在内核模式中，当它返回到应用程序代码时，处理器就把模式从内核模式改回到用户模式。</p>
+<h4 id="6-5-3-上下文切换"><a href="#6-5-3-上下文切换" class="headerlink" title="6.5.3 上下文切换"></a>6.5.3 上下文切换</h4><p>操作系统内核为每个进程维护一个上下文。所谓上下文就是内核重新启动一个被抢占的进程所需的状态。它由一些对象的值组成，这些对象包括通用寄存器、浮点寄存器、程序计数器、用户栈、状态寄存器、内核栈和各种内核数据结构，比如描述地址空间的页表，包含有关当前进程信息的进程表，以及包含进程已打开文件的信息的文件表。</p>
+<h4 id="6-5-3-Hello的执行"><a href="#6-5-3-Hello的执行" class="headerlink" title="6.5.3 Hello的执行"></a>6.5.3 Hello的执行</h4><p>从 Shell 中运行 hello 时，它运行在用户模式，运行过程中，内核不断切换上下文，使运行过程被切分成时间片，与其他进程交替占用执行，实现进程的调度。如果在运行过程中收到信号等，那么就会进入内核模式，运行信号处理程序，之后再返回用户模式。</p>
+<h3 id="6-6-Hello的异常与信号处理"><a href="#6-6-Hello的异常与信号处理" class="headerlink" title="6.6 Hello的异常与信号处理"></a>6.6 Hello的异常与信号处理</h3><p>异常可以分为四类：中断、陷阱、故障和终止。它们的性质如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031547971.png" srcset="/img/loading.gif" lazyload alt="异常的性质"></p>
+<p><strong>中断：</strong>比如在 hello 运行过程中，我们敲击键盘，那么就会触发中断，系统调用内核中的中断处理程序执行，然后返回，hello 继续执行，如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031547503.png" srcset="/img/loading.gif" lazyload alt="中断"></p>
+<p><strong>陷阱：</strong>陷阱就是系统调用，我们的 hello 运行在用户模式下，无法直接运行内核中的程序，比如像 fork，exit 这样的系统调用。于是就通过陷阱的方式，执行 systemcall 指令，内核调用陷阱处理程序来执行系统调用，如图：</p>
+<p><img src="https://pic4.zhimg.com/v2-019d75eae05738e1eacc49ce6d2a669f_r.jpg" srcset="/img/loading.gif" lazyload alt="陷阱"></p>
+<p><strong>故障：</strong>当我们的 hello 运行时，当某一条指令引用一个虚拟地址，而地址相对应的物理页面不在内存中，就会发生故障。内核调用故障处理程序（这里是缺页处理程序），缺页处理程序从磁盘中加载适当的页面，然后将控制返回给引起故障的指令，该指令就能顺畅地执行了。</p>
+<p>当然，也有一些故障会使程序直接终止。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031547487.png" srcset="/img/loading.gif" lazyload alt="故障"></p>
+<p><strong>终止：</strong>hello 在运行时，也有可能遇到硬件错误，那就只能自认倒霉，终止 hello 的运行。</p>
+<h4 id="6-6-2-信号"><a href="#6-6-2-信号" class="headerlink" title="6.6.2 信号"></a>6.6.2 信号</h4><p>使用 man 7 signal 查看 Linux 信号如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031548294.png" srcset="/img/loading.gif" lazyload alt="信号"></p>
+<p>我在hello运行过程中，测试其中部分信号。</p>
+<p><strong>SIGSTP：</strong>当 hello 在前台运行时，按下 Ctrl+z 会向它发送 SIGSTP 信号，这个进程就会暂时挂起，可以使用 fg %<pid> 命令，让它在前台继续执行：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031548263.png" srcset="/img/loading.gif" lazyload alt="SIGSTP"></p>
+<p><strong>SIGINT：</strong>当 hello 在前台运行时，按下 Ctrl+c 会向它发送 SIGINT 信号，这个进程就会被终止：</p>
+<p><img src="https://pic4.zhimg.com/v2-e5a80277f98f1afb4e24cf8028e07e4b_r.jpg" srcset="/img/loading.gif" lazyload alt="SIGINT"></p>
+<p>也可以在执行 hello 程序的命令后面加上 &amp;，这样它就会在后台运行，分别使用 ps 和 jobs 来查看 hello 进程。</p>
+<p><img src="https://pic3.zhimg.com/v2-70fee69d9718e2b0b80fb1e31e2be2ca_r.jpg" srcset="/img/loading.gif" lazyload alt="执行"></p>
+<p>ps 和 jobs 的区别在于，ps 会打印系统中的所有进程，包括我正在使用的终端 Shell，而 job 只会打印 Shell 正在维护的进程，它不会包括自己。</p>
+<p>当进程在后台运行时，我们用键盘发送的信号是无法发送给它，这时可以用 kill 命令来终止它：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031548255.png" srcset="/img/loading.gif" lazyload alt="kill"></p>
+<h3 id="6-7本章小结"><a href="#6-7本章小结" class="headerlink" title="6.7本章小结"></a>6.7本章小结</h3><p>这章讲解了 hello 如何运行在操作系统的上下文中，以及它如何受到信号的控制。</p>
+<h2 id="第7章-hello的存储管理"><a href="#第7章-hello的存储管理" class="headerlink" title="第7章 hello的存储管理"></a>第7章 hello的存储管理</h2><h3 id="7-1-hello的存储器地址空间"><a href="#7-1-hello的存储器地址空间" class="headerlink" title="7.1 hello的存储器地址空间"></a>7.1 hello的存储器地址空间</h3><p>我们的 hello 进程是与其它进程共享 CPU 和主存资源的，为了更加有效地管理内存并且少出错，现代操作系统提供了一种对主存的抽象概念，叫做虚拟内存。虚拟内存时硬件异常、硬件地址翻译、主存、磁盘文件和内核软件的完美交互，它为每个进程提供了一个大的、一致的和私有的地址空间。首先确定一些概念</p>
+<ol>
+<li>逻辑地址：格式为“段地址:偏移地址”，是 CPU 生成的地址，在内部和编程使用，并不唯一。</li>
+<li>线性地址：逻逻辑地址到物理地址变换之间的中间层，逻辑地址经过段机制后转化为线性地址。</li>
+<li>虚拟地址：保护模式下，hello 运行在虚拟地址空间中，它访问存储器所用的逻辑地址。</li>
+<li>物理地址：加载到内存地址寄存器中的地址，内存单元的真正地址。CPU 通过地址总线的寻址，找到真实的物理内存对应地址。</li>
+</ol>
+<h3 id="7-2-Intel逻辑地址到线性地址的变换-段式管理"><a href="#7-2-Intel逻辑地址到线性地址的变换-段式管理" class="headerlink" title="7.2 Intel逻辑地址到线性地址的变换-段式管理"></a>7.2 Intel逻辑地址到线性地址的变换-段式管理</h3><p>在 Intel 平台下的实模式中，逻辑地址为：CS：EA，CS 是段寄存器，将 CS 里的值左移四位，再加上 EA 就是线性地址。</p>
+<p>而保护模式下，要用段描述符作为下标，到 GDT（全局描述符表）&#x2F;LAT（局部描述符表）中查表获得段地址，段地址+偏移地址就是线性地址。</p>
+<p>段描述符是一个 16 位字长的字段，如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031551956.webp" srcset="/img/loading.gif" lazyload alt="段描述符"></p>
+<p>TI 位指示选择 GDT 还是 LDT，前 13 位作为索引来确定段描述符在描述符表中的位置。从段描述符和偏移地址得到线性地址的过程如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031551966.png" srcset="/img/loading.gif" lazyload alt="线性地址"></p>
+<h3 id="7-3-Hello的线性地址到物理地址的变换-页式管理"><a href="#7-3-Hello的线性地址到物理地址的变换-页式管理" class="headerlink" title="7.3 Hello的线性地址到物理地址的变换-页式管理"></a>7.3 Hello的线性地址到物理地址的变换-页式管理</h3><p>VM 系统将虚拟内存分割为成为虚拟页的大小固定的快，物理内存也被分割为物理页，成为页帧。虚拟页面就可以作为缓存的工具，被分为三个部分：</p>
+<ul>
+<li>未分配的：VM 系统还未分配的页</li>
+<li>已缓存的：当前已缓存在物理内存中的已分配页</li>
+<li>未缓存的：未缓存在物理内存的已分配页</li>
+</ul>
+<p>如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031552271.png" srcset="/img/loading.gif" lazyload alt="磁盘分配"></p>
+<h3 id="7-4-TLB与四级页表支持下的VA到PA的变换"><a href="#7-4-TLB与四级页表支持下的VA到PA的变换" class="headerlink" title="7.4 TLB与四级页表支持下的VA到PA的变换"></a>7.4 TLB与四级页表支持下的VA到PA的变换</h3><p>页表是 PTE（页表条目）的数组，它将虚拟页映射到物理页，每个 PTE 都有一个有效位和一个 n 位地址字段，有效位表明该虚拟页是否被缓存在 DRAM 中，地址字段表明 DRAM 中相应物理页的起始位置，它分为两个部分：VPO（虚拟页面偏移）和 VPN（虚拟页号），如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031552804.png" srcset="/img/loading.gif" lazyload alt="四级页表"></p>
+<h3 id="7-4-1-TLB加速地址翻译"><a href="#7-4-1-TLB加速地址翻译" class="headerlink" title="7.4.1 TLB加速地址翻译"></a>7.4.1 TLB加速地址翻译</h3><p>为了优化 CPU 产生一个虚拟地址后，MMU 查阅 PTE的过程，在 MMU 中设置一个关于 PTE 的小缓存，称为 TLB（翻译后备缓冲器）。像普通的缓存一样，TLB 的索引和标记是从 PTE 中的 VPN 提取出来的，如图：</p>
+<p><img src="https://pic4.zhimg.com/v2-b8e6d6540726714757f0abb484603ddb_r.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="7-4-2-四级页表翻译"><a href="#7-4-2-四级页表翻译" class="headerlink" title="7.4.2 四级页表翻译"></a>7.4.2 四级页表翻译</h3><p>Core i7 采用四级页表层次结构，如图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031553090.png" srcset="/img/loading.gif" lazyload alt="四级"></p>
+<p>每次 CPU 产生一个虚拟地址后，通过它的 VPN 部分看 TLB 中是否缓存，如果命中，直接得到 PPN，将虚拟地址中的 VPO 作为物理页偏移，这样就能得到物理地址；如果 TLB 不命中，则经过四级页表的查找得到最终的PTE，从而得到 PPN，进而得到物理地址。</p>
+<h3 id="7-5-三级Cache支持下的物理内存访问"><a href="#7-5-三级Cache支持下的物理内存访问" class="headerlink" title="7.5 三级Cache支持下的物理内存访问"></a>7.5 三级Cache支持下的物理内存访问</h3><p>得到物理地址后，将物理地址分为 CT（标记位）、CI(组索引) 和 CO（块偏移）。根据 CI 查找 L1 缓存中的组，依次与组中每一行的数据比较，有效位有效且标记位一致则命中。如果命中，直接返回想要的数据。如果不命中，就依次去 L2、L3 缓存判断是否命中，命中时将数据传给 CPU 同时更新各级缓存。</p>
+<h3 id="7-6-hello进程fork时的内存映射"><a href="#7-6-hello进程fork时的内存映射" class="headerlink" title="7.6 hello进程fork时的内存映射"></a>7.6 hello进程fork时的内存映射</h3><p>在 Shell 输入命令行后，内核调用fork创建子进程，为 hello 程序的运行创建上下文，并分配一个与父进程不同的PID。通过 fork 创建的子进程拥有父进程相同的区域结构、页表等的一份副本，同时子进程也可以访问任何父进程已经打开的文件。当 fork 在新进程中返回时，新进程现在的虚拟内存刚好和调用 fork 时存在的虚拟内存相同，当这两个进程中的任一个后来进行写操作时，写时复制机制就会创建新页面，因此，也就为每个进程保持了私有地址空间。</p>
+<h3 id="7-7-hello进程execve时的内存映射"><a href="#7-7-hello进程execve时的内存映射" class="headerlink" title="7.7 hello进程execve时的内存映射"></a>7.7 hello进程execve时的内存映射</h3><p>execve() 函数调用驻留在内核区域的启动加载器代码，在当前进程中加载并运行包含在可执行目标文件 hello 中的程序，用 hello 程序有效地替代了当前程序。加载并运行 hello 需要以下几个步骤：</p>
+<ol>
+<li>删除已存在的用户区域，删除当前进程虚拟地址的用户部分中的已存在的区域结构。</li>
+<li>映射私有区域，为新程序的代码、数据、bss 和栈区域创建新的区域结构，所有这些新的区域都是私有的、写时复制的。代码和数据区域被映射为 hello 文件中的 .text 和 .data 区，bss 区域是请求二进制零的，映射到匿名文件，其大小包含在 hello 中，栈和堆地址也是请求二进制零的，初始长度为零。</li>
+<li>映射共享区域， hello 程序与共享对象 <a target="_blank" rel="noopener" href="http://libc.so/">libc.so</a> 链接，<a target="_blank" rel="noopener" href="http://libc.so/">libc.so</a> 是动态链接到这个程序中的，然后再映射到用户虚拟地址空间中的共享区域内。</li>
+<li>设置程序计数器（PC），execv() 做的最后一件事情就是设置当前进程上下文的程序计数器，使之指向代码区域的入口点。</li>
+</ol>
+<p><img src="https://pic1.zhimg.com/v2-624efd0bb2f6b18ddfa640eee05bdf2c_r.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="7-8-缺页故障与缺页中断处理"><a href="#7-8-缺页故障与缺页中断处理" class="headerlink" title="7.8 缺页故障与缺页中断处理"></a>7.8 缺页故障与缺页中断处理</h3><p>正如前面讲到的，hello 在运行时，很有可能会发生缺页故障，大致流程已经在 6.6.1 中做了阐述。当 CPU 产生的一个虚拟地址并不在 DRAM 缓存中时，缺页异常处理程序会选择一个牺牲页，用要读取的地址的内容替换它，然后内核重新启动导致缺页的指令。</p>
+<h3 id="7-9-动态存储分配管理"><a href="#7-9-动态存储分配管理" class="headerlink" title="7.9 动态存储分配管理"></a>7.9 动态存储分配管理</h3><p>hello 在运行时，它调用的 printf 函数会调用malloc函数，动态存储分配管理又是操作系统的一个伟大设计！</p>
+<h4 id="7-9-1-堆"><a href="#7-9-1-堆" class="headerlink" title="7.9.1 堆"></a>7.9.1 堆</h4><p>动态内存分配器维护着一个进程的虚拟内存区域，称为堆。如图：</p>
+<p><img src="https://pic4.zhimg.com/v2-f2c774e8b6c8fa8a727a58e0ab3ab34b_r.jpg" srcset="/img/loading.gif" lazyload alt="堆"></p>
+<p>分配器将堆视为一组大小不同的块的集合来维护，且它们的地址是连续的。将块标记为两种，已分配的块供应用程序使用，空闲块用来分配</p>
+<h4 id="7-9-2-隐式空闲链表管理"><a href="#7-9-2-隐式空闲链表管理" class="headerlink" title="7.9.2 隐式空闲链表管理"></a>7.9.2 隐式空闲链表管理</h4><p>想要设计好的数据结构维护空闲块需要考虑以下方面：</p>
+<ol>
+<li>空闲块组织：利用隐式空闲链表记录空闲块</li>
+<li>放置策略：如何选择合适的空闲块分配？<ol>
+<li>首次适配：从头开始搜索空闲链表，选择第一个合适的空闲块</li>
+<li>下一次适配：从上一次查询结束的地方开始搜索选择第一个合适的空闲块</li>
+<li>最佳适配：搜索能放下请求大小的最小空闲块</li>
+</ol>
+</li>
+<li>分割：在将一个新分配的块放置到某个空闲块后，剩余的部分要进行处理</li>
+<li>合并：释放某个块后，要让它与相邻的空闲块合并</li>
+</ol>
+<p>每个空闲块的结构如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/htwzxwj/image@main/202402031553114.png" srcset="/img/loading.gif" lazyload alt="空闲块结构"></p>
+<ul>
+<li>脚部与头部是相同的，均为 4 个字节，用来存储块的大小，以及表明这个块是已分配还是空闲块</li>
+<li>由于要求块双字对齐，所以块大小就总是 8 的倍数，低 3 位总是为 0，因而，我们只需要利用头部和脚部的高29 位存储块的大小，剩下 3 位的最低位来指明这个块是否空闲，000 为空闲，001 为已分配</li>
+</ul>
+<p>为什么既设置头部又设置尾部呢？这是为了能够以常数时间来进行块的合并。无论是与下一块还是与上一块合并，都可以通过他们的头部或尾部得知块大小，从而定位整个块，避免了从头遍历链表。空闲块怎么组织呢？如图：</p>
+<p><img src="https://pic2.zhimg.com/v2-8afa38804c79597f739f6bbee1dfc4d9_r.jpg" srcset="/img/loading.gif" lazyload alt="空闲块"></p>
+<p>堆有两个特殊的标记：</p>
+<ul>
+<li>序言块：8 个字节，由一个头部和一个脚部组成</li>
+<li>结尾块：大小为 0 的头部</li>
+</ul>
+<p>为了消除合并空闲块时边界的考虑，将序言块和结尾块的分配位均设置为已分配。为了保证双字对齐，在序言块的前面还设置了 4 个字节作为填充。</p>
+<h4 id="7-9-3-显式空闲链表管理"><a href="#7-9-3-显式空闲链表管理" class="headerlink" title="7.9.3 显式空闲链表管理"></a>7.9.3 显式空闲链表管理</h4><p>真实的操作系统实际上使用的是显示空闲链表管理。它的思路是维护多个空闲链表，每个链表中的块有大致相等的大小，分配器维护着一个空闲链表数组，每个大小类一个空闲链表，当需要分配块时只需要在对应的空闲链表中搜索就好了，有两种分离存储的方法</p>
+<p><strong>简单分离存储：</strong>从不合并与分离，每个块的大小就是大小类中最大元素的大小。例如大小类为 {17~32}，则需要分配块的大小在这个区间时均在此对应链表进行分配，并且都是分配大小为 32 的块。这样做，显然分配和释放都是常数级的，但是空间利用率较低</p>
+<p><strong>分离适配：</strong>每个大小类的空闲链表包含大小不同的块，分配完一个块后，将这个块进行分割，并根据剩下的块的大小将其插入到适当大小类的空闲链表中。这个做法平衡了搜索时间与空间利用率，C 标准库提供的 GNU malloc 包就是采用的这种方法。</p>
+<h3 id="7-10本章小结"><a href="#7-10本章小结" class="headerlink" title="7.10本章小结"></a>7.10本章小结</h3><p>本章介绍了现代操作系统的灵魂：存储器地址空间、段式管理、页式管理，VA 到 PA 的变换、物理内存访问， hello 进程 fork 时和 execve 时的内存映射、缺页故障与缺页中断处理、包括隐式空闲链表和显式空闲链表的动态存储分配管理。这些巧妙的设计使得我们的 hello 最终得以运行。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>至此，hello 终于走完了它的一生，让我们为它的一生做个小结：</p>
+<ul>
+<li>程序设计者编写出它的基因——hello.c</li>
+<li>预处理器完善它的基因——hello.i</li>
+<li>编译器为它注入的灵魂——hello.s</li>
+<li>汇编器为它的诞生做最后的准备——hello.o</li>
+<li>链接器让它长出完整的躯体——hello</li>
+<li>Shell 为它创建子进程，让它真正成为系统中的个体</li>
+<li>加载器映射虚拟内存，给予它成长的条件</li>
+<li>CPU 的逻辑控制流让它驰骋在硬件与操作系统之上</li>
+<li>虚拟地址这一计算机系统最伟大的抽象为它的驰骋导航</li>
+<li>malloc 的高效管理让它的驰骋拥有更广阔的天地</li>
+<li>信号与异常约束它的行为，让它总是走在康庄大道之上</li>
+<li>当 hello 垂垂老矣，运行完最后一行代码，__libc_start_main 将控制转移给内核，Shell 回收子进程，内核删除与它相关的所有数据结构，它在这个世界的所有痕迹至此被抹去。</li>
+</ul>
+<p>回首它的一生，惊心动魄，千难万险。其中的每个阶段无不凝结着人类最伟大的智慧！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSAPP/" class="category-chain-item">CSAPP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/computer/" class="print-no-link">#computer</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>computer_systems</div>
+      <div>http://htwzxwj.github.io/2024/02/03/csapp/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>End0rph1n</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年2月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/01/31/csapp-malloc-lab/" title="csapp malloc_lab">
+                        <span class="hidden-mobile">csapp malloc_lab</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
