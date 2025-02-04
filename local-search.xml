@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>CS61A</title>
+    <link href="/2025/02/04/CS61A/"/>
+    <url>/2025/02/04/CS61A/</url>
+    
+    <content type="html"><![CDATA[<h2 id="CS61A：解构编程本质的范式跃迁之旅"><a href="#CS61A：解构编程本质的范式跃迁之旅" class="headerlink" title="CS61A：解构编程本质的范式跃迁之旅"></a>CS61A：解构编程本质的范式跃迁之旅</h2><p> 在UC Berkeley CS61A的代码炼狱中淬炼九周，我逐渐领悟到这门课的本质远不止于Python&#x2F;Scheme语法教学，而是一场颠覆认知的编程范式革命。从函数式到面向对象，从解释器原理到元编程实践，每个技术单元都在重构我对计算的底层理解。</p><h3 id="一、函数式编程的λ启示录"><a href="#一、函数式编程的λ启示录" class="headerlink" title="一、函数式编程的λ启示录"></a>一、函数式编程的λ启示录</h3><p> 当高阶函数与递归相遇，代码开始展现数学般优雅的拓扑结构。通过实现<code>tree_map</code>和<code>memoize</code>装饰器，我掌握了柯里化技术的精髓：</p> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">curried_pow</span>(<span class="hljs-params">x</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">h</span>(<span class="hljs-params">y</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">pow</span>(x, y)<br>    <span class="hljs-keyword">return</span> h<br></code></pre></td></tr></table></figure><p> 在Scheme的S-expression中，<code>(define (make-adder n) (lambda (x) (+ x n)))</code>展示了闭包的真正威力。尾递归优化将O(n)空间复杂度降至O(1)，这种空间效率的质变在实现快速排序时尤为显著。</p><h3 id="二、面向对象的多态宇宙"><a href="#二、面向对象的多态宇宙" class="headerlink" title="二、面向对象的多态宇宙"></a>二、面向对象的多态宇宙</h3><p> 类继承体系构建出精妙的类型拓扑：</p> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stream</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, first, compute_rest</span>):<br>        self._first = first<br>        self._compute_rest = compute_rest<br><span class="hljs-meta">    @property</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rest</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">if</span> self._compute_rest <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            self._rest = self._compute_rest()<br>            self._compute_rest = <span class="hljs-literal">None</span><br>        <span class="hljs-keyword">return</span> self._rest<br></code></pre></td></tr></table></figure><p>Python 的类继承体系构造了清晰的类型层次结构。惰性求值流的实现展示了 <code>__getattr__</code> 在动态属性计算中的作用，使得按需计算更加高效。多重继承的 MRO 解析遵循 C3 线性化算法，确保方法解析顺序的一致性和可预测性，在 GUI 组件的设计中，这种机制能够支持灵活的组件组合，并有效避免继承冲突。</p><h3 id="三、解释器工程的递归下降"><a href="#三、解释器工程的递归下降" class="headerlink" title="三、解释器工程的递归下降"></a>三、解释器工程的递归下降</h3><p> 在Scheme解释器项目中，手工构建的REPL环境实现了代码即数据的哲学：</p><ol><li>词法分析器将<code>(define (fib n) ...)</code>转化为Token流</li><li>递归下降解析器构建AST语法树</li><li>环境帧实现词法作用域链</li><li>尾调用优化打破栈空间限制</li></ol><p>当eval&#x2F;apply循环开始运转时，我目睹了图灵完备性如何在2000行代码中诞生。这个项目让我彻底理解LISP的”code is data”真谛。</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p> 这门课的真正价值，在于它用最朴素的代码揭示了计算的本质：从λ演算到类型系统，从求值策略到编译原理，每个技术细节都是通向计算机科学圣殿的钥匙。当最终完成自己的Scheme解释器时，我忽然明白：我们不是在写代码，而是在用符号构建一个自洽的计算宇宙。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CS61A</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>computer_systems</title>
     <link href="/2024/02/03/csapp/"/>
     <url>/2024/02/03/csapp/</url>
